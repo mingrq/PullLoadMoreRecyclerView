@@ -3,12 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_liner"
+    <ImageView
+        android:id="@+id/iv_stagg"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        android:text="测试" />
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="#a68f8f"/>
 </RelativeLayout>

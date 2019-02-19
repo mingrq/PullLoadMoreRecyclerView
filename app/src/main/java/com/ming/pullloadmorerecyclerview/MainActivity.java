@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,5 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,StaggeredgridActivity.class));
             }
         });
+        ImageView imageView = findViewById(R.id.images);
+        Glide.with(this).load("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg").into(imageView);
     }
 }

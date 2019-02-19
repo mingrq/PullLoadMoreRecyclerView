@@ -27,7 +27,7 @@ public class PullLoadMoreView extends FrameLayout {
 
     /*布局类型*/
     private int layoutType;
-    private int column;
+    private int SpanCount;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RelativeLayout headLayout;
@@ -35,6 +35,7 @@ public class PullLoadMoreView extends FrameLayout {
     private RelativeLayout footLayout;
     //适配器
     private RecyclerView.Adapter adapter;
+    private GridLayoutManager gridLayoutManager;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -51,7 +52,7 @@ public class PullLoadMoreView extends FrameLayout {
         /*swipeRefreshLayout = findViewById(R.id.swiperefresh);
         headLayout = findViewById(R.id.head_layout);*/
         recyclerView = findViewById(R.id.recycle);
-       /* footLayout = findViewById(R.id.foot_layout);*/
+        /* footLayout = findViewById(R.id.foot_layout);*/
     }
     /*---------------------------对外方法------------------------------------*/
 
@@ -67,12 +68,12 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
-     * 设置布局列数
+     * 设置跨距数
      *
-     * @param column 列数
+     * @param SpanCount 跨距数
      */
-    public PullLoadMoreView setLayoutColumn(int column) {
-        this.column = column;
+    public PullLoadMoreView setSpanCount(int SpanCount) {
+        this.SpanCount = SpanCount;
         return this;
     }
 
@@ -85,6 +86,25 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
+     * 设置分割线
+     */
+    public PullLoadMoreView setDivider(int width, int color) {
+        RecycleViewDivider divider = new RecycleViewDivider(context);
+        divider.setDrvider(width, color);
+        recyclerView.addItemDecoration(divider);
+        return this;
+    }
+
+    /**
+     * 设置自定义分割线
+     */
+
+    public PullLoadMoreView setustomDivider(RecyclerView.ItemDecoration itemDecoration) {
+        recyclerView.addItemDecoration(itemDecoration);
+        return this;
+    }
+
+    /**
      * 提交
      */
     public void commit() {
@@ -93,9 +113,13 @@ public class PullLoadMoreView extends FrameLayout {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 break;
             case GRIDLAYOUT:
-                recyclerView.setLayoutManager(new GridLayoutManager(context, column));
+                gridLayoutManager = new GridLayoutManager(context, SpanCount);
+                recyclerView.setLayoutManager(gridLayoutManager);
                 break;
             case STAGGEREDGRIDLAYOUT:
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
+                staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
                 break;
         }
         recyclerView.setAdapter(adapter);

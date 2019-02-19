@@ -20,17 +20,17 @@ public class LinerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liner);
         LinerAdapter linerAdapter = new LinerAdapter(this);
+        PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_liner);
+        pullLoadMoreView
+                .setLayoutType(PullLoadMoreView.LINERLAYOUT)
+                .setDivider(2,getResources().getColor(R.color.colorPrimaryDark))
+                .setAdapter(linerAdapter)
+                .commit();
         List<Integer> contents = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             contents.add(i);
         }
         linerAdapter.setContents(contents);
-        PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_liner);
-        pullLoadMoreView
-                .setLayoutType(PullLoadMoreView.LINERLAYOUT)
-                .setAdapter(linerAdapter)
-                .commit();
-
 
     }
 }

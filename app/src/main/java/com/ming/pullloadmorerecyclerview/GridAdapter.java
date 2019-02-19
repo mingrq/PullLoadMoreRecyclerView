@@ -14,13 +14,14 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class LinerAdapter extends RecyclerView.Adapter<LinerAdapter.MyViewHolder> {
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> {
     private Context context;
     private List<Integer> contents;
 
-    public LinerAdapter(Context context) {
+    public GridAdapter(Context context) {
         this.context = context;
     }
+
     public void setContents(List<Integer> contents) {
         this.contents = contents;
         notifyDataSetChanged();
@@ -44,7 +45,6 @@ public class LinerAdapter extends RecyclerView.Adapter<LinerAdapter.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView textView;
 
         public MyViewHolder(@NonNull View itemView) {
