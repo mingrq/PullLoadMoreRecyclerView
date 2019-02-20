@@ -1,5 +1,6 @@
 package com.ming.pullloadmorerecyclerview;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,25 +24,32 @@ public class MainActivity extends AppCompatActivity {
         Button linerButton = findViewById(R.id.liner);
         Button gridButton = findViewById(R.id.grid);
         Button staButton = findViewById(R.id.stagg);
+        Button listButton = findViewById(R.id.lsit);
         linerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,LinerActivity.class));
+                startActivity(new Intent(MainActivity.this, LinerActivity.class));
             }
         });
         gridButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,GridActivity.class));
+                startActivity(new Intent(MainActivity.this, GridActivity.class));
             }
         });
         staButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,StaggeredgridActivity.class));
+                startActivity(new Intent(MainActivity.this, StaggeredgridActivity.class));
             }
         });
         ImageView imageView = findViewById(R.id.images);
         Glide.with(this).load("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg").into(imageView);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ListsActivity.class));
+            }
+        });
     }
 }

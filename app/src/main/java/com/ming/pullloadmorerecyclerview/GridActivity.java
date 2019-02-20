@@ -24,6 +24,7 @@ public class GridActivity extends AppCompatActivity{
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
                 .setSpanCount(3)
+                .setSpacing(20,20)
                 .setAdapter(linerAdapter)
                 .commit();
         List<Integer> contents = new ArrayList<>();
