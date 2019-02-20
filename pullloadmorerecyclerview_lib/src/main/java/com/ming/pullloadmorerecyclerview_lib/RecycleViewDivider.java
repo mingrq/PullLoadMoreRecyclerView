@@ -21,9 +21,13 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     /*布局类型*/
     private int layoutType;
 
+    private int SpanCount;
     private int color;
     private int height;
     private Context context;
+
+    private int horizontalSpacing;
+    private int verticalSpacing;
 
     /**
      * 默认分割线：高度为2px，颜色为灰色
@@ -40,12 +44,19 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         switch (layoutType){
             case LINERLAYOUT:
+                outRect.top = height;
                 break;
             case GRIDLAYOUT:
             case STAGGEREDGRIDLAYOUT:
+                outRect.bottom = horizontalSpacing;
+                outRect.left = verticalSpacing;
+                int index=parent.getChildLayoutPosition(view);
+                if (index%SpanCount==0){
+                    outRect.left=0;
+                }
                 break;
         }
-        outRect.top = height;
+
     }
 
 
@@ -54,27 +65,29 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         super.onDraw(c, parent, state);
         switch (layoutType){
             case LINERLAYOUT:
+                Paint paint = new Paint();
+                paint.setColor(color);
+                int childCount = parent.getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    View view = parent.getChildAt(i);
+                    int index = parent.getChildAdapterPosition(view);
+                    //第一个ItemView不需要绘制
+                    if (index == 0) {
+                        continue;
+                    }
+                    float dividerTop = view.getTop() - height;
+                    float dividerLeft = parent.getPaddingLeft();
+                    float dividerBottom = view.getTop();
+                    float dividerRight = parent.getWidth() - parent.getPaddingRight();
+                    c.drawRect(dividerLeft, dividerTop, dividerRight, dividerBottom, paint);
+                }
                 break;
             case GRIDLAYOUT:
             case STAGGEREDGRIDLAYOUT:
+
                 break;
         }
-        Paint paint = new Paint();
-        paint.setColor(color);
-        int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View view = parent.getChildAt(i);
-            int index = parent.getChildAdapterPosition(view);
-            //第一个ItemView不需要绘制
-            if (index == 0) {
-                continue;
-            }
-            float dividerTop = view.getTop() - height;
-            float dividerLeft = parent.getPaddingLeft();
-            float dividerBottom = view.getTop();
-            float dividerRight = parent.getWidth() - parent.getPaddingRight();
-            c.drawRect(dividerLeft, dividerTop, dividerRight, dividerBottom, paint);
-        }
+
     }
 
     /*----------------------------------对外方法--------------------------------------------*/
@@ -90,12 +103,17 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         this.height = width;
     }
 
+
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
      *
-     * @param horizontalSpacing 水平间距
+     * @param SpanCount 跨距数
+     * @param Spacing 水平间距
      * @param verticalSpacing   垂直间距
      */
-    public void setSpacing(int horizontalSpacing, int verticalSpacing) {
+    public void setSpacing(int SpanCount,int Spacing, int verticalSpacing) {
+        this.SpanCount = SpanCount;
+        this.horizontalSpacing = Spacing;
+        this.verticalSpacing = verticalSpacing;
     }
 }

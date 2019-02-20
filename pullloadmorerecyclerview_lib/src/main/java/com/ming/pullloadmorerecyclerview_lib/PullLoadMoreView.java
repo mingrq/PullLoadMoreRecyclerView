@@ -68,16 +68,6 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
-     * 设置跨距数
-     *
-     * @param SpanCount 跨距数
-     */
-    public PullLoadMoreView setSpanCount(int SpanCount) {
-        this.SpanCount = SpanCount;
-        return this;
-    }
-
-    /**
      * 设置适配器
      */
     public PullLoadMoreView setAdapter(RecyclerView.Adapter adapter) {
@@ -89,7 +79,7 @@ public class PullLoadMoreView extends FrameLayout {
      * 设置分割线  LinerLayout布局使用
      */
     public PullLoadMoreView setDivider(int height, int color) {
-        RecycleViewDivider divider = new RecycleViewDivider(context,layoutType);
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType);
         divider.setDrvider(height, color);
         recyclerView.addItemDecoration(divider);
         return this;
@@ -97,14 +87,16 @@ public class PullLoadMoreView extends FrameLayout {
 
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
-     *
+     * <p>
+     * @param SpanCount 跨距数
      * @param horizontalSpacing 水平间距
      * @param verticalSpacing   垂直间距
      * @return
      */
-    public PullLoadMoreView setSpacing(int horizontalSpacing, int verticalSpacing) {
-        RecycleViewDivider divider = new RecycleViewDivider(context,layoutType);
-        divider.setSpacing(horizontalSpacing,verticalSpacing);
+    public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing) {
+        this.SpanCount = SpanCount;
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType);
+        divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing);
         recyclerView.addItemDecoration(divider);
         return this;
     }
@@ -126,7 +118,7 @@ public class PullLoadMoreView extends FrameLayout {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 break;
             case GRIDLAYOUT:
-                gridLayoutManager = new GridLayoutManager(context, SpanCount);
+                gridLayoutManager = new GridLayoutManager(context, SpanCount, LinearLayoutManager.VERTICAL, false);
                 recyclerView.setLayoutManager(gridLayoutManager);
                 break;
             case STAGGEREDGRIDLAYOUT:

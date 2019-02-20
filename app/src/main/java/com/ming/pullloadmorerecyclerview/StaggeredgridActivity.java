@@ -23,7 +23,7 @@ public class StaggeredgridActivity extends AppCompatActivity{
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
-                .setSpanCount(2)
+                .setSpacing(2,20,20)
 
                 .setAdapter(linerAdapter)
                 .commit();
