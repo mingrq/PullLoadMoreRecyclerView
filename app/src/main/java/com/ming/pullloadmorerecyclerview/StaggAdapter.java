@@ -41,15 +41,10 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         if (context!=null){
             Glide.with(context).load(contents.get(i)).into(myViewHolder.imageView);
-            ViewGroup.LayoutParams params =  myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
-            params.height = 400;//把随机的高度赋予item布局
-            myViewHolder.itemView.setLayoutParams(params);//把params设置给item布
-        }else {
-            myViewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
         }
-        /*ViewGroup.LayoutParams params =  myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
-        params.height = myViewHolder.imageView.getHeight();//把随机的高度赋予item布局
-        myViewHolder.itemView.setLayoutParams(params);//把params设置给item布*/
+        ViewGroup.LayoutParams params =  myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
+
+        myViewHolder.itemView.setLayoutParams(params);//把params设置给item布
     }
 
     @Override

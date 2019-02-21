@@ -45,6 +45,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         int index = parent.getChildLayoutPosition(view);
+        int column = index % SpanCount; //当前的item是第几列的
         switch (layoutType) {
             case LINERLAYOUT:
                 outRect.top = height;
@@ -53,8 +54,6 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 }
                 break;
             case GRIDLAYOUT:
-            case STAGGEREDGRIDLAYOUT:
-                int column = index % SpanCount; // item column
                 if (!horizontalMargin && !verticalMargin) {
                     outRect.left = column * verticalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
                     outRect.right = verticalSpacing - (column + 1) * verticalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
@@ -62,13 +61,38 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                         outRect.top = verticalSpacing; // item top
                     }
                 }
-                if (verticalMargin) {
-                    outRect.left = column * verticalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
-                    outRect.right = verticalSpacing - (column + 1) * verticalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                    outRect.top = verticalSpacing; // item top
+                if (verticalMargin && !horizontalMargin) {
+                    outRect.left = column * horizontalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
+                    outRect.right = verticalSpacing - (column + 1) * horizontalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                    if (index < SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
                     outRect.bottom = verticalSpacing;
-                    int count = parent.getChildCount();
-                    if (count-)
+                }
+                if (horizontalMargin && !verticalMargin) {
+                    outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                    if (index >= SpanCount) {
+                        outRect.top = verticalSpacing; // item top
+                    }
+                }
+                if (horizontalMargin && verticalMargin) {
+                    outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                    if (index < SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
+                    outRect.bottom = verticalSpacing;
+                }
+                break;
+            case STAGGEREDGRIDLAYOUT:
+                if (horizontalMargin && verticalMargin) {
+                   /* outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                    if (index < SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
+                    outRect.bottom = verticalSpacing;*/
                 }
                 break;
         }
@@ -99,8 +123,8 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 }
                 break;
             case GRIDLAYOUT:
+                break;
             case STAGGEREDGRIDLAYOUT:
-
                 break;
         }
 
