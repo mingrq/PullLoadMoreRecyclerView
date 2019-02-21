@@ -36,6 +36,8 @@ public class PullLoadMoreView extends FrameLayout {
     //适配器
     private RecyclerView.Adapter adapter;
     private GridLayoutManager gridLayoutManager;
+    private int horizontalSpacing;
+    private int verticalSpacing;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -88,15 +90,20 @@ public class PullLoadMoreView extends FrameLayout {
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
      * <p>
-     * @param SpanCount 跨距数
+     *
+     * @param SpanCount         跨距数
      * @param horizontalSpacing 水平间距
      * @param verticalSpacing   垂直间距
+     * @param verticalMargin         是否需要上下边距
+     * @param horizontalMargin        是否需要左右边距
      * @return
      */
-    public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing) {
+    public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin) {
         this.SpanCount = SpanCount;
+        this.horizontalSpacing = horizontalSpacing;
+        this.verticalSpacing = verticalSpacing;
         RecycleViewDivider divider = new RecycleViewDivider(context, layoutType);
-        divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing);
+        divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing, horizontalMargin, verticalMargin);
         recyclerView.addItemDecoration(divider);
         return this;
     }

@@ -23,7 +23,7 @@ public class LinerActivity extends AppCompatActivity {
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_liner);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.LINERLAYOUT)
-                .setDivider(2,getResources().getColor(R.color.colorPrimaryDark))
+                .setDivider(20,getResources().getColor(R.color.colorPrimaryDark))
                 .setAdapter(linerAdapter)
                 .commit();
         List<Integer> contents = new ArrayList<>();

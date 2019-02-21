@@ -23,7 +23,7 @@ public class GridActivity extends AppCompatActivity{
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
-                .setSpacing(5,20,20)
+                .setSpacing(5,20,20,false,false)
                 .setAdapter(linerAdapter)
                 .commit();
         List<Integer> contents = new ArrayList<>();

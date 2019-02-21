@@ -28,13 +28,15 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 
     private int horizontalSpacing;
     private int verticalSpacing;
+    private boolean verticalMargin;
+    private boolean horizontalMargin;
 
     /**
      * 默认分割线：高度为2px，颜色为灰色
      *
      * @param context
      */
-    public RecycleViewDivider(Context context,int layoutType) {
+    public RecycleViewDivider(Context context, int layoutType) {
         this.context = context;
         this.layoutType = layoutType;
     }
@@ -42,17 +44,31 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        switch (layoutType){
+        int index = parent.getChildLayoutPosition(view);
+        switch (layoutType) {
             case LINERLAYOUT:
                 outRect.top = height;
+                if (index == 0) {
+                    outRect.top = 0;
+                }
                 break;
             case GRIDLAYOUT:
             case STAGGEREDGRIDLAYOUT:
-                outRect.bottom = horizontalSpacing;
-                outRect.left = verticalSpacing;
-                int index=parent.getChildLayoutPosition(view);
-                if (index%SpanCount==0){
-                    outRect.left=0;
+                int column = index % SpanCount; // item column
+                if (!horizontalMargin && !verticalMargin) {
+                    outRect.left = column * verticalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
+                    outRect.right = verticalSpacing - (column + 1) * verticalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                    if (index >= SpanCount) {
+                        outRect.top = verticalSpacing; // item top
+                    }
+                }
+                if (verticalMargin) {
+                    outRect.left = column * verticalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
+                    outRect.right = verticalSpacing - (column + 1) * verticalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                    outRect.top = verticalSpacing; // item top
+                    outRect.bottom = verticalSpacing;
+                    int count = parent.getChildCount();
+                    if (count-)
                 }
                 break;
         }
@@ -63,7 +79,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.onDraw(c, parent, state);
-        switch (layoutType){
+        switch (layoutType) {
             case LINERLAYOUT:
                 Paint paint = new Paint();
                 paint.setColor(color);
@@ -106,14 +122,20 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
+     * <p>
      *
-     * @param SpanCount 跨距数
-     * @param Spacing 水平间距
+     * @param SpanCount         跨距数
+     * @param horizontalSpacing 水平间距
      * @param verticalSpacing   垂直间距
+     * @param verticalMargin    是否需要上下边距
+     * @param horizontalMargin  是否需要左右边距
+     * @return
      */
-    public void setSpacing(int SpanCount,int Spacing, int verticalSpacing) {
+    public void setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin) {
         this.SpanCount = SpanCount;
-        this.horizontalSpacing = Spacing;
+        this.horizontalMargin = horizontalMargin;
+        this.verticalMargin = verticalMargin;
+        this.horizontalSpacing = horizontalSpacing;
         this.verticalSpacing = verticalSpacing;
     }
 }
