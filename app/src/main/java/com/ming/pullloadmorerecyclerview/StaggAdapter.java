@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import static com.bumptech.glide.request.target.Target.SIZE_ORIGINAL;
+
 /**
  * Author MingRuQi
  * E-mail mingruqi@sina.cn
@@ -39,10 +41,15 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        if (context!=null){
-            Glide.with(context).load(contents.get(i)).into(myViewHolder.imageView);
+        if (context != null) {
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+//Item的宽度，或图片的宽度
+            int width = screenWidth / 2;
+            Glide.with(context).load(contents.get(i)).override(width,SIZE_ORIGINAL)
+                    .fitCenter().into(myViewHolder.imageView);
+            //Glide.with(context).load(contents.get(i)).into(myViewHolder.imageView);
         }
-        ViewGroup.LayoutParams params =  myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
+        ViewGroup.LayoutParams params = myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
 
         myViewHolder.itemView.setLayoutParams(params);//把params设置给item布
     }
@@ -53,7 +60,7 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-       ImageView imageView;
+        ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -23,7 +23,7 @@ public class StaggeredgridActivity extends AppCompatActivity{
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
-                .setSpacing(2,20,20,true,true)
+                .setSpacing(2,20,20,false,false)
 
                 .setAdapter(linerAdapter)
                 .commit();
@@ -38,6 +38,37 @@ public class StaggeredgridActivity extends AppCompatActivity{
         contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
         contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
         contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg");
+        contents.add("http://img1.imgtn.bdimg.com/it/u=1258659760,2193329985&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2847223552,3832031298&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=2713007455,3038975744&fm=26&gp=0.jpg");
+        contents.add("http://img4.imgtn.bdimg.com/it/u=1286488394,241255406&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=266745161,658804068&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
+        contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg");
+        contents.add("http://img1.imgtn.bdimg.com/it/u=1258659760,2193329985&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2847223552,3832031298&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=2713007455,3038975744&fm=26&gp=0.jpg");
+        contents.add("http://img4.imgtn.bdimg.com/it/u=1286488394,241255406&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=266745161,658804068&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
+        contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg");
+        contents.add("http://img1.imgtn.bdimg.com/it/u=1258659760,2193329985&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2847223552,3832031298&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=2713007455,3038975744&fm=26&gp=0.jpg");
+        contents.add("http://img4.imgtn.bdimg.com/it/u=1286488394,241255406&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
+        contents.add("http://img5.imgtn.bdimg.com/it/u=266745161,658804068&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
+        contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
+
         linerAdapter.setContents(contents);
     }
 }
