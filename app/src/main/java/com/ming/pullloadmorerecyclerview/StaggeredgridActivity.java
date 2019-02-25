@@ -23,8 +23,7 @@ public class StaggeredgridActivity extends AppCompatActivity{
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
-                .setSpacing(2,20,20,false,false)
-
+                .setSpacing(2,20,20,true,true)
                 .setAdapter(linerAdapter)
                 .commit();
         List<String> contents = new ArrayList<>();
@@ -69,6 +68,12 @@ public class StaggeredgridActivity extends AppCompatActivity{
         contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
         contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
 
-        linerAdapter.setContents(contents);
+
+           List<Integer> mHeight=new ArrayList<>();
+            for (int i = 0; i <= contents.size(); i++) {
+                //依次给给图片设置宽高
+                mHeight.add((int)(300+Math.random()*400));
+            }
+        linerAdapter.setContents(contents,mHeight);
     }
 }

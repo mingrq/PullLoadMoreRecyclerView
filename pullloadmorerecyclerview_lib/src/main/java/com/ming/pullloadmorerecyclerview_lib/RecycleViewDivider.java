@@ -86,36 +86,12 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 }
                 break;
             case STAGGEREDGRIDLAYOUT:
-                /*if (!horizontalMargin && !verticalMargin) {
-                    outRect.left = column * verticalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
-                    outRect.right = verticalSpacing - (column + 1) * verticalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                    if (index >= SpanCount) {
-                        outRect.top = verticalSpacing; // item top
-                    }
+                outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                if (index < SpanCount) {
+                    outRect.top = verticalSpacing;
                 }
-                if (verticalMargin && !horizontalMargin) {
-                    outRect.left = column * horizontalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
-                    outRect.right = verticalSpacing - (column + 1) * horizontalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                    if (index < SpanCount) {
-                        outRect.top = verticalSpacing;
-                    }
-                    outRect.bottom = verticalSpacing;
-                }
-                if (horizontalMargin && !verticalMargin) {
-                    outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
-                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                    if (index >= SpanCount) {
-                        outRect.top = verticalSpacing; // item top
-                    }
-                }
-                if (horizontalMargin && verticalMargin) {
-                    outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
-                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                    if (index < SpanCount) {
-                        outRect.top = verticalSpacing;
-                    }
-                    outRect.bottom = verticalSpacing;
-                }*/
+                outRect.bottom = verticalSpacing;
                 break;
         }
 

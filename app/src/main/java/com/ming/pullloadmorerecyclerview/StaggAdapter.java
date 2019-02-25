@@ -22,13 +22,15 @@ import static com.bumptech.glide.request.target.Target.SIZE_ORIGINAL;
 public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder> {
     private Context context;
     private List<String> contents;
+    private List<Integer> mheight;
 
     public StaggAdapter(Context context) {
         this.context = context;
     }
 
-    public void setContents(List<String> contents) {
+    public void setContents(List<String> contents,List<Integer> mheight) {
         this.contents = contents;
+        this.mheight=mheight;
         notifyDataSetChanged();
     }
 
@@ -42,16 +44,17 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         if (context != null) {
-            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+         /*   int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
 //Item的宽度，或图片的宽度
             int width = screenWidth / 2;
-            Glide.with(context).load(contents.get(i)).override(width,SIZE_ORIGINAL)
-                    .fitCenter().into(myViewHolder.imageView);
-            //Glide.with(context).load(contents.get(i)).into(myViewHolder.imageView);
-        }
-        ViewGroup.LayoutParams params = myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
 
-        myViewHolder.itemView.setLayoutParams(params);//把params设置给item布
+            ViewGroup.LayoutParams params = myViewHolder.imageView.getLayoutParams();//得到item的LayoutParams布局参数
+            params.height = mheight.get(i);
+            params.width=width;
+            myViewHolder.itemView.setLayoutParams(params);//把params设置给item布*/
+            Glide.with(context).load(contents.get(i)).into(myViewHolder.imageView);
+        }
+
     }
 
     @Override
