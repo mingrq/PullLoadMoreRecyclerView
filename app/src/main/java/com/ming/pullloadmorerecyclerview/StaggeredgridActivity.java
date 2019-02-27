@@ -19,7 +19,7 @@ public class StaggeredgridActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stagg);
-        StaggAdapter linerAdapter = new StaggAdapter(this);
+        StaggAdapter linerAdapter = new StaggAdapter(StaggeredgridActivity.this);
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
@@ -67,7 +67,8 @@ public class StaggeredgridActivity extends AppCompatActivity{
         contents.add("http://img0.imgtn.bdimg.com/it/u=2661055612,1771836516&fm=26&gp=0.jpg");
         contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
         contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
-
+        contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
 
            List<Integer> mHeight=new ArrayList<>();
             for (int i = 0; i <= contents.size(); i++) {

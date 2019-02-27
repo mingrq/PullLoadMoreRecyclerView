@@ -7,6 +7,6 @@
         android:id="@+id/iv_stagg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:background="#a68f8f"/>
+        android:background="#a68f8f"
+        android:adjustViewBounds="true" />
 </RelativeLayout>

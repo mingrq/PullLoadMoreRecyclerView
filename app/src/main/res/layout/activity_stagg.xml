@@ -5,6 +5,7 @@
     android:gravity="center">
 
     <com.ming.pullloadmorerecyclerview_lib.PullLoadMoreView
+        android:background="@color/colorAccent"
         android:id="@+id/pull_stagg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

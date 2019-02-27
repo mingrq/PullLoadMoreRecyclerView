@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -45,7 +46,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         int index = parent.getChildLayoutPosition(view);
-        int column = index % SpanCount; //当前的item是第几列的
+        int column;
         switch (layoutType) {
             case LINERLAYOUT:
                 outRect.top = height;
@@ -54,6 +55,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 }
                 break;
             case GRIDLAYOUT:
+                column = index % SpanCount; //当前的item是第几列的
                 if (!horizontalMargin && !verticalMargin) {
                     outRect.left = column * verticalSpacing / SpanCount; // column * ((1f / spanCount) * spacing)
                     outRect.right = verticalSpacing - (column + 1) * verticalSpacing / SpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
@@ -86,12 +88,35 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 }
                 break;
             case STAGGEREDGRIDLAYOUT:
+                StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
+                column = params.getSpanIndex();
+                Log.e("test", String.valueOf(column));
                 outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
                 outRect.right = (column + 1) * horizontalSpacing / SpanCount;
                 if (index < SpanCount) {
                     outRect.top = verticalSpacing;
                 }
                 outRect.bottom = verticalSpacing;
+              /*  if (params.getSpanIndex() % SpanCount == 0) {
+                    outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                } else {
+                    outRect.left = horizontalSpacing / 2;
+                    outRect.right = horizontalSpacing;
+                }*/
+
+             /*   outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                if (index < SpanCount) {
+                    outRect.top = verticalSpacing;
+                }
+                outRect.bottom = verticalSpacing;*/
+               /* outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                if (index < SpanCount) {
+                    outRect.top = verticalSpacing;
+                }
+                outRect.bottom = verticalSpacing;*/
                 break;
         }
 

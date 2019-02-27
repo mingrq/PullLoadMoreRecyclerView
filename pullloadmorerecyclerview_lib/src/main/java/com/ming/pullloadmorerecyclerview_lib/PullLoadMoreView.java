@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -38,6 +39,7 @@ public class PullLoadMoreView extends FrameLayout {
     private GridLayoutManager gridLayoutManager;
     private int horizontalSpacing;
     private int verticalSpacing;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -54,6 +56,7 @@ public class PullLoadMoreView extends FrameLayout {
         /*swipeRefreshLayout = findViewById(R.id.swiperefresh);
         headLayout = findViewById(R.id.head_layout);*/
         recyclerView = findViewById(R.id.recycle);
+
         /* footLayout = findViewById(R.id.foot_layout);*/
     }
     /*---------------------------对外方法------------------------------------*/
@@ -107,7 +110,6 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView.addItemDecoration(divider);
         return this;
     }
-
     /**
      * 设置自定义分割线
      */
@@ -129,8 +131,9 @@ public class PullLoadMoreView extends FrameLayout {
                 recyclerView.setLayoutManager(gridLayoutManager);
                 break;
             case STAGGEREDGRIDLAYOUT:
-                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
+                staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                 break;
         }
