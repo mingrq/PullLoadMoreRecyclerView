@@ -133,8 +133,8 @@ public class PullLoadMoreView extends FrameLayout {
             case STAGGEREDGRIDLAYOUT:
                 staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                staggeredGridLayoutManager.invalidateSpanAssignments();
                 break;
         }
         recyclerView.setAdapter(adapter);
