@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 
 /**
+ * 布局装饰器
+ *
  * Author MingRuQi
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/19 17:18
@@ -21,12 +23,10 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     private final int STAGGEREDGRIDLAYOUT = 0x00020;//瀑布流
     /*布局类型*/
     private int layoutType;
-
     private int SpanCount;
     private int color;
     private int height;
     private Context context;
-
     private int horizontalSpacing;
     private int verticalSpacing;
     private boolean verticalMargin;
@@ -49,9 +49,8 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         int column;
         switch (layoutType) {
             case LINERLAYOUT:
-                outRect.top = height;
-                if (index == 0) {
-                    outRect.top = 0;
+                if (index > 0) {
+                    outRect.top = height;
                 }
                 break;
             case GRIDLAYOUT:
@@ -90,33 +89,37 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
             case STAGGEREDGRIDLAYOUT:
                 StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
                 column = params.getSpanIndex();
-                Log.e("test", String.valueOf(column));
-                outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
-                outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                if (index < SpanCount) {
-                    outRect.top = verticalSpacing;
+                if (!horizontalMargin && !verticalMargin) {
+                    outRect.left = column * horizontalSpacing / SpanCount;
+                    outRect.right = verticalSpacing - (column + 1) * horizontalSpacing / SpanCount;
+                    if (index >=SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
                 }
-                outRect.bottom = verticalSpacing;
-              /*  if (params.getSpanIndex() % SpanCount == 0) {
+                if (verticalMargin && !horizontalMargin) {
+                    outRect.left = column * horizontalSpacing / SpanCount;
+                    outRect.right = verticalSpacing - (column + 1) * horizontalSpacing / SpanCount;
+                    if (index < SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
+                    outRect.bottom = verticalSpacing;
+                }
+                if (horizontalMargin && !verticalMargin) {
                     outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
                     outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                } else {
-                    outRect.left = horizontalSpacing / 2;
-                    outRect.right = horizontalSpacing;
-                }*/
+                    if (index >=SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
+                }
+                if (horizontalMargin && verticalMargin) {
+                    outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
+                    outRect.right = (column + 1) * horizontalSpacing / SpanCount;
+                    if (index < SpanCount) {
+                        outRect.top = verticalSpacing;
+                    }
+                    outRect.bottom = verticalSpacing;
+                }
 
-             /*   outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
-                outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                if (index < SpanCount) {
-                    outRect.top = verticalSpacing;
-                }
-                outRect.bottom = verticalSpacing;*/
-               /* outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
-                outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                if (index < SpanCount) {
-                    outRect.top = verticalSpacing;
-                }
-                outRect.bottom = verticalSpacing;*/
                 break;
         }
 
@@ -135,14 +138,13 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                     View view = parent.getChildAt(i);
                     int index = parent.getChildAdapterPosition(view);
                     //第一个ItemView不需要绘制
-                    if (index == 0) {
-                        continue;
+                    if (index > 0) {
+                        float dividerTop = view.getTop() - height;
+                        float dividerLeft = parent.getPaddingLeft();
+                        float dividerBottom = view.getTop();
+                        float dividerRight = parent.getWidth() - parent.getPaddingRight();
+                        c.drawRect(dividerLeft, dividerTop, dividerRight, dividerBottom, paint);
                     }
-                    float dividerTop = view.getTop() - height;
-                    float dividerLeft = parent.getPaddingLeft();
-                    float dividerBottom = view.getTop();
-                    float dividerRight = parent.getWidth() - parent.getPaddingRight();
-                    c.drawRect(dividerLeft, dividerTop, dividerRight, dividerBottom, paint);
                 }
                 break;
             case GRIDLAYOUT:
@@ -153,7 +155,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 
     }
 
-    /*----------------------------------对外方法--------------------------------------------*/
+    /**----------------------------------对外方法--------------------------------------------*/
 
     /**
      * 设置分割线颜色和高度  LinerLayout布局使用

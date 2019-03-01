@@ -1,21 +1,23 @@
-package com.ming.pullloadmorerecyclerview_lib;
+package com.ming.pullloadmorerecyclerview;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.io.Serializable;
 
 /**
  * Created by cl on 2018/5/3.
  */
 
-public class GirlItemData implements Parcelable {
+public class StaggeredGridImageDataBean implements Serializable {
     private String url;
     private int width;
     private int height;
 
-    public GirlItemData() {
+    public StaggeredGridImageDataBean() {
     }
 
-    public GirlItemData(String title, String url, String id, int width, int height, String subtype) {
+    public StaggeredGridImageDataBean(String url, int width, int height) {
         this.url = url;
         this.width = width;
         this.height = height;
@@ -47,33 +49,21 @@ public class GirlItemData implements Parcelable {
     }
 
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.url);
-        dest.writeInt(this.width);
-        dest.writeInt(this.height);
-    }
-
-    protected GirlItemData(Parcel in) {
+    protected StaggeredGridImageDataBean(Parcel in) {
         this.url = in.readString();
         this.width = in.readInt();
         this.height = in.readInt();
     }
 
-    public static final Parcelable.Creator<GirlItemData> CREATOR = new Parcelable.Creator<GirlItemData>() {
+    public static final Parcelable.Creator<StaggeredGridImageDataBean> CREATOR = new Parcelable.Creator<StaggeredGridImageDataBean>() {
         @Override
-        public GirlItemData createFromParcel(Parcel source) {
-            return new GirlItemData(source);
+        public StaggeredGridImageDataBean createFromParcel(Parcel source) {
+            return new StaggeredGridImageDataBean(source);
         }
 
         @Override
-        public GirlItemData[] newArray(int size) {
-            return new GirlItemData[size];
+        public StaggeredGridImageDataBean[] newArray(int size) {
+            return new StaggeredGridImageDataBean[size];
         }
     };
 }

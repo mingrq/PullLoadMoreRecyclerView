@@ -40,6 +40,9 @@ public class PullLoadMoreView extends FrameLayout {
     private int horizontalSpacing;
     private int verticalSpacing;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private boolean isRefresh = true;
+    private boolean isMore = true;
+    private PullLoadMoreListener pullLoadMoreListener = null;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -53,13 +56,13 @@ public class PullLoadMoreView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.pullloadmoreview, this);
-        /*swipeRefreshLayout = findViewById(R.id.swiperefresh);
-        headLayout = findViewById(R.id.head_layout);*/
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        /* headLayout = findViewById(R.id.head_layout);*/
         recyclerView = findViewById(R.id.recycle);
 
         /* footLayout = findViewById(R.id.foot_layout);*/
     }
-    /*---------------------------对外方法------------------------------------*/
+    /**---------------------------对外方法------------------------------------*/
 
 
     /**
@@ -97,8 +100,8 @@ public class PullLoadMoreView extends FrameLayout {
      * @param SpanCount         跨距数
      * @param horizontalSpacing 水平间距
      * @param verticalSpacing   垂直间距
-     * @param verticalMargin         是否需要上下边距
-     * @param horizontalMargin        是否需要左右边距
+     * @param verticalMargin    是否需要上下边距
+     * @param horizontalMargin  是否需要左右边距
      * @return
      */
     public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin) {
@@ -110,13 +113,52 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView.addItemDecoration(divider);
         return this;
     }
+
     /**
      * 设置自定义分割线
      */
-   /* public PullLoadMoreView setCustomDivider(RecyclerView.ItemDecoration itemDecoration) {
+    public PullLoadMoreView setCustomDivider(RecyclerView.ItemDecoration itemDecoration) {
         recyclerView.addItemDecoration(itemDecoration);
         return this;
-    }*/
+    }
+
+    /**
+     * 是否需要下拉刷新上拉加载功能
+     *
+     * @param isRefresh 刷新
+     * @param isMore    加载更多
+     */
+    public void setIsRefreshAndMore(boolean isRefresh, boolean isMore) {
+        this.isRefresh = isRefresh;
+        this.isMore = isMore;
+    }
+
+    /**
+     * 设置正在刷新状态
+     *
+     * @param isRefreshing
+     */
+    public void setRefreshing(boolean isRefreshing) {
+
+    }
+
+    /**
+     * 设置正在加载数据状态
+     *
+     * @param isLoadMoreing
+     */
+    public void setLoadMoreing(boolean isLoadMoreing) {
+
+    }
+
+    /**
+     * 设置下拉刷新上拉加载监听
+     *
+     * @param pullLoadMoreListener
+     */
+    public void setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
+        this.pullLoadMoreListener = pullLoadMoreListener;
+    }
 
     /**
      * 提交
@@ -140,4 +182,17 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView.setAdapter(adapter);
     }
 
+
+    /*------------------------------------------接口---------------------------------------------------------*/
+
+    /**
+     * 上拉加载下拉刷新监听接口
+     */
+    interface PullLoadMoreListener {
+        //刷新回调
+        void onRefresh();
+
+        //加载更多回调
+        void onLoadMore();
+    }
 }

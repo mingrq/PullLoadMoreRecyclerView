@@ -19,6 +19,7 @@
         <activity android:name=".LinerActivity"/>
         <activity android:name=".GridActivity"/>
         <activity android:name=".StaggeredgridActivity"/>
+        <service android:name="com.ming.pullloadmorerecyclerview.StaggeredGridImageDataService"/>
     </application>
 
 </manifest>

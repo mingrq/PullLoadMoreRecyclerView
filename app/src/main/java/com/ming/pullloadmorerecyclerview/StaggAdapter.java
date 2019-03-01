@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.ming.pullloadmorerecyclerview_lib.GirlItemData;
 
 import java.util.List;
 
@@ -21,19 +20,19 @@ import java.util.List;
  */
 public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder> {
     private Context context;
-    private List<GirlItemData> contents;
+    private List<StaggeredGridImageDataBean> contents;
     private List<Integer> mheight;
 
     public StaggAdapter(Context context) {
         this.context = context;
     }
 
-    public void setContents(List<GirlItemData> contents) {
+    public void setContents(List<StaggeredGridImageDataBean> contents) {
         this.contents = contents;
         notifyDataSetChanged();
     }
 
-    public void addContents(List<GirlItemData> data) {
+    public void addContents(List<StaggeredGridImageDataBean> data) {
         contents = data;
         notifyDataSetChanged();
     }
@@ -57,7 +56,7 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
         if (context != null) {
             int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
 //Item的宽度，或图片的宽度
-            int swidth = (screenWidth-60) / 2;
+            int swidth = (screenWidth-60) / 4;
             int h = contents.get(i).getHeight();
             int w = contents.get(i).getWidth();
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myViewHolder.imageView.getLayoutParams();
@@ -66,7 +65,7 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
             params.height = vh;
             myViewHolder.imageView.setLayoutParams(params);
             Glide.with(context).load(contents.get(i).getUrl()).into(myViewHolder.imageView);
-            myViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context,String.valueOf(contents.get(i).getWidth()+" h:"+contents.get(i).getHeight()+" vw"+myViewHolder.imageView.getWidth()+" vh"+myViewHolder.imageView.getHeight()),Toast.LENGTH_SHORT).show();

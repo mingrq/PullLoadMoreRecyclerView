@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.ming.pullloadmorerecyclerview_lib.DataService;
-import com.ming.pullloadmorerecyclerview_lib.GirlItemData;
 import com.ming.pullloadmorerecyclerview_lib.PullLoadMoreView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,7 +31,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
-                .setSpacing(2, 20, 20, true, true)
+                .setSpacing(4, 20, 20, true, false)
                 .setAdapter(linerAdapter)
                 .commit();
         List<String> contents = new ArrayList<>();
@@ -79,13 +77,13 @@ public class StaggeredgridActivity extends AppCompatActivity {
         contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
         contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
         contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
-        List<GirlItemData> data = new ArrayList<>();
+        List<StaggeredGridImageDataBean> data = new ArrayList<>();
         for (int j = 0; j < contents.size(); j++) {
-            GirlItemData s = new GirlItemData();
+            StaggeredGridImageDataBean s = new StaggeredGridImageDataBean();
             s.setUrl(contents.get(j));
             data.add(s);
         }
-        DataService.startService(StaggeredgridActivity.this, data);
+        StaggeredGridImageDataService.startService(StaggeredgridActivity.this, data);
 
     }
 
@@ -96,7 +94,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void dataEvent(List<GirlItemData> data) {
+    public void dataEvent(List<StaggeredGridImageDataBean> data) {
         linerAdapter.addContents(data);
     }
 }

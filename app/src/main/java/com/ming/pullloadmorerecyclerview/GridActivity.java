@@ -19,18 +19,17 @@ public class GridActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
-        GridAdapter linerAdapter = new GridAdapter(this);
+        GridAdapter gridAdapter = new GridAdapter(this);
         PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
-                .setSpacing(2,20,20,false,false
-                )
-                .setAdapter(linerAdapter)
+                .setSpacing(3,20,20,true,true)
+                .setAdapter(gridAdapter)
                 .commit();
         List<Integer> contents = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
             contents.add(i);
         }
-        linerAdapter.setContents(contents);
+        gridAdapter.setContents(contents);
     }
 }
