@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -43,6 +44,8 @@ public class PullLoadMoreView extends FrameLayout {
     private boolean isRefresh = true;
     private boolean isMore = true;
     private PullLoadMoreListener pullLoadMoreListener = null;
+    private View connectFailedPage = null;
+    private View noDataPage = null;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -59,7 +62,6 @@ public class PullLoadMoreView extends FrameLayout {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         /* headLayout = findViewById(R.id.head_layout);*/
         recyclerView = findViewById(R.id.recycle);
-
         /* footLayout = findViewById(R.id.foot_layout);*/
     }
     /**---------------------------对外方法------------------------------------*/
@@ -128,18 +130,19 @@ public class PullLoadMoreView extends FrameLayout {
      * @param isRefresh 刷新
      * @param isMore    加载更多
      */
-    public void setIsRefreshAndMore(boolean isRefresh, boolean isMore) {
+    public PullLoadMoreView setIsRefreshAndMore(boolean isRefresh, boolean isMore) {
         this.isRefresh = isRefresh;
         this.isMore = isMore;
+        return this;
     }
 
     /**
-     * 设置正在刷新状态
+     * 设置刷新状态
      *
      * @param isRefreshing
      */
     public void setRefreshing(boolean isRefreshing) {
-
+        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     /**
@@ -161,6 +164,55 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
+     * 设置空数据页面
+     *
+     * @param noDataPage
+     * @return
+     */
+    public PullLoadMoreView setNoDataPage(View noDataPage) {
+        this.noDataPage = noDataPage;
+        return this;
+    }
+
+    /**
+     * 打开空数据页面
+     */
+    public void openNoDataPage() {
+        if (noDataPage == null) {
+            //没有自定义，使用默认页面
+
+        } else {
+            //使用自定义页面
+
+        }
+    }
+
+    /**
+     * 设置网络连接失败页面
+     *
+     * @param connectFailedPage
+     * @return
+     */
+    public PullLoadMoreView setConnectFailedPage(View connectFailedPage) {
+        this.connectFailedPage = connectFailedPage;
+        return this;
+    }
+
+    /**
+     * 打开网络连接失败页面
+     */
+    public void openConnectFailedPage() {
+        if (connectFailedPage == null) {
+            //没有自定义，使用默认页面
+
+        } else {
+            //使用自定义页面
+
+        }
+    }
+
+
+    /**
      * 提交
      */
     public void commit() {
@@ -179,6 +231,17 @@ public class PullLoadMoreView extends FrameLayout {
                 staggeredGridLayoutManager.invalidateSpanAssignments();
                 break;
         }
+        swipeRefreshLayout.setEnabled(isRefresh);//设置是否启动下拉刷新
+        //为RecyclerView设置刷新监听
+        if (isRefresh && pullLoadMoreListener != null) {
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    pullLoadMoreListener.onRefresh();
+                }
+            });
+        }
+
         recyclerView.setAdapter(adapter);
     }
 
@@ -188,11 +251,21 @@ public class PullLoadMoreView extends FrameLayout {
     /**
      * 上拉加载下拉刷新监听接口
      */
-    interface PullLoadMoreListener {
+    public interface PullLoadMoreListener {
         //刷新回调
         void onRefresh();
 
         //加载更多回调
         void onLoadMore();
     }
+
+    /* *//**
+     * item点击监听接口
+     *//*
+    public interface OnClickItemListener {
+        void onItemClick(View item);
+    }*/
+
 }
+
+

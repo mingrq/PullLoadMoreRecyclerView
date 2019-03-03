@@ -3,6 +3,7 @@ package com.ming.pullloadmorerecyclerview;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.ming.pullloadmorerecyclerview_lib.PullLoadMoreView;
 
@@ -31,5 +32,16 @@ public class GridActivity extends AppCompatActivity{
             contents.add(i);
         }
         gridAdapter.setContents(contents);
+        pullLoadMoreView.setOnPullLoadMoreListener(new PullLoadMoreView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(GridActivity.this,"ghjghg",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
     }
 }
