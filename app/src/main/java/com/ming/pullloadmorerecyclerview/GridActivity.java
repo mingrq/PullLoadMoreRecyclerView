@@ -3,6 +3,7 @@ package com.ming.pullloadmorerecyclerview;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.ming.pullloadmorerecyclerview_lib.PullLoadMoreView;
@@ -27,6 +28,8 @@ public class GridActivity extends AppCompatActivity{
                 .setSpacing(3,20,20,true,true)
                 .setAdapter(gridAdapter)
                 .commit();
+       // pullLoadMoreView.openNoDataPage();
+        //pullLoadMoreView.openConnectFailedPage();
         List<Integer> contents = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
             contents.add(i);

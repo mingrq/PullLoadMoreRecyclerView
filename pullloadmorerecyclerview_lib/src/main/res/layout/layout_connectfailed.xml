@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rly_nodata"
+    android:id="@+id/rly_networkerror"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,14 +16,14 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:layout_gravity="center"
-            android:src="@drawable/nodata" />
+            android:src="@drawable/networkerror" />
 
         <TextView
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:text="暂无数据，点击页面刷新"
+            android:text="网络连接失败，点击页面刷新"
             android:textColor="#dad9d9"
             android:layout_gravity="center"
             android:textSize="14sp" />

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 /**
  * 下拉刷新上拉加载控件
@@ -27,14 +28,16 @@ public class PullLoadMoreView extends FrameLayout {
     public static final int GRIDLAYOUT = 0x00010;//网格布局
     public static final int STAGGEREDGRIDLAYOUT = 0x00020;//瀑布流
 
+    private static final int NODATA = 0x114254;//空数据页面
+    private static final int CONNECTFAILED = 0x114255;//网络连接错误页面
+
+
     /*布局类型*/
     private int layoutType;
     private int SpanCount;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RelativeLayout headLayout;
     private RecyclerView recyclerView;
-    private RelativeLayout footLayout;
     //适配器
     private RecyclerView.Adapter adapter;
     private GridLayoutManager gridLayoutManager;
@@ -46,6 +49,7 @@ public class PullLoadMoreView extends FrameLayout {
     private PullLoadMoreListener pullLoadMoreListener = null;
     private View connectFailedPage = null;
     private View noDataPage = null;
+    private FrameLayout frameLayout;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -60,9 +64,8 @@ public class PullLoadMoreView extends FrameLayout {
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.pullloadmoreview, this);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
-        /* headLayout = findViewById(R.id.head_layout);*/
         recyclerView = findViewById(R.id.recycle);
-        /* footLayout = findViewById(R.id.foot_layout);*/
+        frameLayout = findViewById(R.id.fly_pullloadmore);
     }
     /**---------------------------对外方法------------------------------------*/
 
@@ -130,7 +133,7 @@ public class PullLoadMoreView extends FrameLayout {
      * @param isRefresh 刷新
      * @param isMore    加载更多
      */
-    public PullLoadMoreView setIsRefreshAndMore(boolean isRefresh, boolean isMore) {
+    public PullLoadMoreView setNeedRefreshAndMore(boolean isRefresh, boolean isMore) {
         this.isRefresh = isRefresh;
         this.isMore = isMore;
         return this;
@@ -180,12 +183,20 @@ public class PullLoadMoreView extends FrameLayout {
     public void openNoDataPage() {
         if (noDataPage == null) {
             //没有自定义，使用默认页面
-
-        } else {
-            //使用自定义页面
-
+            noDataPage = new NoDataView(context);
+            noDataPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "空数据", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        if (frameLayout != null) {
+            frameLayout.addView(noDataPage);
+            showPage(NODATA);
         }
     }
+
 
     /**
      * 设置网络连接失败页面
@@ -204,13 +215,54 @@ public class PullLoadMoreView extends FrameLayout {
     public void openConnectFailedPage() {
         if (connectFailedPage == null) {
             //没有自定义，使用默认页面
-
-        } else {
-            //使用自定义页面
-
+            connectFailedPage = new ConnectFailedView(context);
+            connectFailedPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "网络连接失败", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        if (frameLayout != null) {
+            frameLayout.addView(connectFailedPage);
+            showPage(CONNECTFAILED);
         }
     }
 
+    /**
+     * 设置显示的页面
+     * @param page
+     */
+    private void showPage(int page) {
+        recyclerView.setVisibility(GONE);
+        if (noDataPage != null) {
+            if (page == NODATA) {
+                noDataPage.setVisibility(VISIBLE);
+            } else {
+                noDataPage.setVisibility(GONE);
+            }
+        }
+        if (connectFailedPage != null) {
+            if (page == CONNECTFAILED) {
+                connectFailedPage.setVisibility(VISIBLE);
+            } else {
+                connectFailedPage.setVisibility(GONE);
+            }
+        }
+    }
+
+    /**
+     * 上拉加载更多状态
+     */
+    public void moreing(){
+
+    }
+    /**
+     * 没有更多数据状态
+     */
+    public void noMore(){
+
+    }
 
     /**
      * 提交
@@ -241,7 +293,6 @@ public class PullLoadMoreView extends FrameLayout {
                 }
             });
         }
-
         recyclerView.setAdapter(adapter);
     }
 
@@ -259,12 +310,6 @@ public class PullLoadMoreView extends FrameLayout {
         void onLoadMore();
     }
 
-    /* *//**
-     * item点击监听接口
-     *//*
-    public interface OnClickItemListener {
-        void onItemClick(View item);
-    }*/
 
 }
 

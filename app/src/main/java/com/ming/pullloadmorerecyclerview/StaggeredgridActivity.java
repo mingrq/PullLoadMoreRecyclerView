@@ -3,7 +3,6 @@ package com.ming.pullloadmorerecyclerview;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.ming.pullloadmorerecyclerview_lib.PullLoadMoreView;
 
@@ -34,7 +33,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
                 .setSpacing(4, 20, 20, true, false)
                 .setAdapter(linerAdapter)
-                .setIsRefreshAndMore(false,true)
+                .setNeedRefreshAndMore(false,true)
                 .commit();
         List<String> contents = new ArrayList<>();
         contents.add("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg");

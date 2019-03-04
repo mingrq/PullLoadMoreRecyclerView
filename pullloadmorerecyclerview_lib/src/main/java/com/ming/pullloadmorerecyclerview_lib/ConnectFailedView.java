@@ -2,6 +2,7 @@ package com.ming.pullloadmorerecyclerview_lib;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 /**
@@ -21,5 +22,6 @@ public class ConnectFailedView extends RelativeLayout{
 
     public ConnectFailedView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        LayoutInflater.from(context).inflate(R.layout.layout_connectfailed, this);
     }
 }
