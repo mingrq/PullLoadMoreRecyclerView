@@ -16,7 +16,7 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class LinerAdapter extends PullLoadMoreRecyclerViewAdapter<LinerAdapter.MyViewHolder> {
+public class LinerAdapter extends PullLoadMoreRecyclerViewAdapter {
     private Context context;
     private List<Integer> contents;
 
@@ -42,7 +42,7 @@ public class LinerAdapter extends PullLoadMoreRecyclerViewAdapter<LinerAdapter.M
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         super.onBindViewHolder(viewHolder, i);
 
     }

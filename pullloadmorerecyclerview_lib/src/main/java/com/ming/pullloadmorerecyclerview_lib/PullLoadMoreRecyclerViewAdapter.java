@@ -11,10 +11,10 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/3/5 17:45
  */
-public abstract class PullLoadMoreRecyclerViewAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
+public abstract class PullLoadMoreRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
-    public void onBindViewHolder(@NonNull T viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
     }
 }

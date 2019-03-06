@@ -332,8 +332,6 @@ public class PullLoadMoreView extends FrameLayout {
         //加载更多回调
         void onLoadMore();
     }
-
-
 }
 
 
