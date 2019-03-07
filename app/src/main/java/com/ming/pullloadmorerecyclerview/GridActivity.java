@@ -27,6 +27,7 @@ public class GridActivity extends AppCompatActivity{
                 .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
                 .setSpacing(3,20,20,true,true)
                 .setAdapter(gridAdapter)
+                .setNeedRefreshAndMore(true,true)
                 .commit();
        // pullLoadMoreView.openNoDataPage();
         //pullLoadMoreView.openConnectFailedPage();

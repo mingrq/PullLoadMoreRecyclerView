@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -32,7 +33,6 @@ public class PullLoadMoreView extends FrameLayout {
     private static final int NODATA = 0x114254;//空数据页面
     private static final int CONNECTFAILED = 0x114255;//网络连接错误页面
 
-
     /*布局类型*/
     private int layoutType;
     private int SpanCount;
@@ -51,6 +51,8 @@ public class PullLoadMoreView extends FrameLayout {
     private View connectFailedPage = null;
     private View noDataPage = null;
     private FrameLayout frameLayout;
+    private LinearLayoutManager linearLayoutManager;
+    private View footerView;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -198,6 +200,12 @@ public class PullLoadMoreView extends FrameLayout {
         }
     }
 
+    /**
+     * 设置正在刷新脚布局
+     */
+    public void setFooterView(View footerView) {
+        this.footerView = footerView;
+    }
 
     /**
      * 设置网络连接失败页面
@@ -273,7 +281,8 @@ public class PullLoadMoreView extends FrameLayout {
     public void commit() {
         switch (layoutType) {
             case LINERLAYOUT:
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                linearLayoutManager = new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(linearLayoutManager);
                 break;
             case GRIDLAYOUT:
                 gridLayoutManager = new GridLayoutManager(context, SpanCount, LinearLayoutManager.VERTICAL, false);
@@ -287,6 +296,7 @@ public class PullLoadMoreView extends FrameLayout {
                 break;
         }
         swipeRefreshLayout.setEnabled(isRefresh);//设置是否启动下拉刷新
+
         //为RecyclerView设置刷新监听
         if (isRefresh && pullLoadMoreListener != null) {
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -303,7 +313,7 @@ public class PullLoadMoreView extends FrameLayout {
 
                 }
             });
-        }else {
+        } else {
             recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -316,7 +326,8 @@ public class PullLoadMoreView extends FrameLayout {
                 }
             });
         }
-        recyclerView.setAdapter(adapter);
+        PullLoadMoreViewAdapter pullLoadMoreViewAdapter = new PullLoadMoreViewAdapter(adapter);
+        recyclerView.setAdapter(pullLoadMoreViewAdapter);
     }
 
 
@@ -331,6 +342,79 @@ public class PullLoadMoreView extends FrameLayout {
 
         //加载更多回调
         void onLoadMore();
+    }
+
+
+    public class PullLoadMoreViewAdapter extends RecyclerView.Adapter {
+        private final int FOOTER = 0x001;
+
+        private RecyclerView.Adapter adapter;
+
+        private boolean isLoadMoreItem(int position) {
+            return isMore && position == getItemCount() - 1;
+        }
+
+        public PullLoadMoreViewAdapter(RecyclerView.Adapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (isLoadMoreItem(position)) {
+                return FOOTER;
+            } else {
+                return adapter.getItemViewType(position);
+            }
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            if (i == FOOTER) {
+                //脚布局
+                switch (layoutType) {
+                    case LINERLAYOUT://线性布局
+                        if (footerView == null) {
+                            return new FooterViewHolder(new FooterView(context));
+                        } else {
+                            return new FooterViewHolder(footerView);
+                        }
+                    case GRIDLAYOUT:
+                        if (footerView == null) {
+                            return new FooterViewHolder(new FooterView(context));
+                        } else {
+                            return new FooterViewHolder(footerView);
+                        }
+
+                }
+
+            }
+            return adapter.onCreateViewHolder(viewGroup, i);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+            if (isLoadMoreItem(i)) {
+                return;
+            }
+            adapter.onBindViewHolder(viewHolder, i);
+        }
+
+        @Override
+        public int getItemCount() {
+            int count = adapter == null ? 0 : adapter.getItemCount();
+            if (count == 0) {
+                return 0;
+            }
+            return isMore ? count + 1 : count;
+        }
+    }
+
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 }
 

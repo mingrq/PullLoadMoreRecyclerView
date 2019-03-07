@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ming.pullloadmorerecyclerview_lib.PullLoadMoreRecyclerViewAdapter;
-
 import java.util.List;
 
 /**
@@ -16,7 +14,7 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class LinerAdapter extends PullLoadMoreRecyclerViewAdapter {
+public class LinerAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<Integer> contents;
 
@@ -35,16 +33,15 @@ public class LinerAdapter extends PullLoadMoreRecyclerViewAdapter {
         return new MyViewHolder(view);
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+    }
+
 
     @Override
     public int getItemCount() {
         return contents != null ? contents.size() : 0;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        super.onBindViewHolder(viewHolder, i);
-
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
