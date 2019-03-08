@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,15 +22,30 @@ public class LinerAdapter extends RecyclerView.Adapter {
     public LinerAdapter(Context context) {
         this.context = context;
     }
+
     public void setContents(List<Integer> contents) {
         this.contents = contents;
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return 0;
+        }
+        return 1;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = View.inflate(context, R.layout.item_liner, null);
+        View view;
+        if (i == 0) {
+            view = View.inflate(context, R.layout.item_linewr, null);
+
+        } else {
+            view = View.inflate(context, R.layout.item_liner, null);
+        }
         return new MyViewHolder(view);
     }
 

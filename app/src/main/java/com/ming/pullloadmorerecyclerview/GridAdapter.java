@@ -2,6 +2,7 @@ package com.ming.pullloadmorerecyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,26 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = View.inflate(context, R.layout.item_liner, null);
         return new MyViewHolder(view);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            ((GridLayoutManager) manager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int i) {
+                    if (i > 6) {
+                        return 2;
+                    }
+                    if (i > 6 && i < 12) {
+                        return 4;
+                    }
+                    return 1;
+                }
+            });
+        }
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override

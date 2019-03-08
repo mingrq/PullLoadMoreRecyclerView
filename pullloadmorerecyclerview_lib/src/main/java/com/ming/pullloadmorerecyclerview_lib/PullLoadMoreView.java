@@ -346,7 +346,7 @@ public class PullLoadMoreView extends FrameLayout {
 
 
     public class PullLoadMoreViewAdapter extends RecyclerView.Adapter {
-        private final int FOOTER = 0x001;
+        private final int FOOTER = 0x0009012453;
 
         private RecyclerView.Adapter adapter;
 
@@ -356,6 +356,32 @@ public class PullLoadMoreView extends FrameLayout {
 
         public PullLoadMoreViewAdapter(RecyclerView.Adapter adapter) {
             this.adapter = adapter;
+        }
+        @Override
+        public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+            ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+            if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams&&holder.getLayoutPosition()==getItemCount()-1) {
+                StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+                // 如果是刷新、加载更多或头布局、脚布局独占一行，否则按照设置展示
+                p.setFullSpan(true); // 设置独占一行
+            }
+        }
+        @Override
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
+            final RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+            if (manager instanceof GridLayoutManager){
+                ((GridLayoutManager) manager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int i) {
+                        int type = getItemViewType(i);
+                        if (type==FOOTER){
+                            return SpanCount;
+                        }
+                        return 1;
+                    }
+                });
+            }
         }
 
         @Override
@@ -385,9 +411,13 @@ public class PullLoadMoreView extends FrameLayout {
                         } else {
                             return new FooterViewHolder(footerView);
                         }
-
+                    case STAGGEREDGRIDLAYOUT:
+                        if (footerView == null) {
+                            return new FooterViewHolder(new FooterView(context));
+                        } else {
+                            return new FooterViewHolder(footerView);
+                        }
                 }
-
             }
             return adapter.onCreateViewHolder(viewGroup, i);
         }
@@ -408,7 +438,25 @@ public class PullLoadMoreView extends FrameLayout {
             }
             return isMore ? count + 1 : count;
         }
+
+        @Override
+        public long getItemId(int position) {
+            return adapter.getItemId(position);
+        }
+
+        @Override
+        public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+            adapter.registerAdapterDataObserver(observer);
+        }
+
+        @Override
+        public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+            if (adapter.hasObservers()) {
+                adapter.unregisterAdapterDataObserver(observer);
+            }
+        }
     }
+
 
     private class FooterViewHolder extends RecyclerView.ViewHolder {
 

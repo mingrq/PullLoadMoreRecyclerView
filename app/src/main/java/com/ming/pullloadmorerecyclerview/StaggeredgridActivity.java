@@ -96,6 +96,6 @@ public class StaggeredgridActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void dataEvent(List<StaggeredGridImageDataBean> data) {
-        linerAdapter.addContents(data);
+        linerAdapter.setContents(data);
     }
 }
