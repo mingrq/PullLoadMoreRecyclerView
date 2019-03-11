@@ -95,7 +95,7 @@ public class PullLoadMoreView extends FrameLayout {
      * 设置分割线  LinerLayout布局使用
      */
     public PullLoadMoreView setDivider(int height, int color) {
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType);
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType,isRefresh,isMore);
         divider.setDrvider(height, color);
         recyclerView.addItemDecoration(divider);
         return this;
@@ -116,7 +116,7 @@ public class PullLoadMoreView extends FrameLayout {
         this.SpanCount = SpanCount;
         this.horizontalSpacing = horizontalSpacing;
         this.verticalSpacing = verticalSpacing;
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType);
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType,isRefresh,isMore);
         divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing, horizontalMargin, verticalMargin);
         recyclerView.addItemDecoration(divider);
         return this;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_nomore"
+    android:id="@+id/layout_loaderror"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,6 +10,6 @@
         android:gravity="center"
         android:padding="16dp"
         android:textColor="#cdcdcd"
-        android:text="我是有底线的"
+        android:text="加载错误"
         android:textSize="16sp" />
 </RelativeLayout>

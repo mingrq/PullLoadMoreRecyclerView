@@ -31,12 +31,12 @@ public class StaggeredgridActivity extends AppCompatActivity {
         final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
-                .setSpacing(4, 20, 20, true, false)
+                .setSpacing(2, 10, 10, true, false)
                 .setAdapter(linerAdapter)
-                .setNeedRefreshAndMore(false,true)
+                .setNeedRefreshAndMore(true,true)
                 .commit();
         List<String> contents = new ArrayList<>();
-        contents.add("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg");
+        /*contents.add("http://img5.imgtn.bdimg.com/it/u=639238630,2179659181&fm=26&gp=0.jpg");
         contents.add("http://img1.imgtn.bdimg.com/it/u=1258659760,2193329985&fm=26&gp=0.jpg");
         contents.add("http://img0.imgtn.bdimg.com/it/u=2847223552,3832031298&fm=26&gp=0.jpg");
         contents.add("http://img5.imgtn.bdimg.com/it/u=2713007455,3038975744&fm=26&gp=0.jpg");
@@ -77,7 +77,39 @@ public class StaggeredgridActivity extends AppCompatActivity {
         contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
         contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
         contents.add("http://img1.imgtn.bdimg.com/it/u=2583418828,2614677295&fm=26&gp=0.jpg");
-        contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");
+        contents.add("http://img0.imgtn.bdimg.com/it/u=116011478,4126655434&fm=26&gp=0.jpg");*/
+         contents.add("http://hbimg.b0.upaiyun.com/dc2bffb262eab801646348ebacaa899f7786670f3c1fb-ZSyM5d_fw658");
+        contents.add("http://pic40.nipic.com/20140330/13328950_214049330194_2.jpg");
+        contents.add("http://imgtu.5011.net/uploads/content/20170418/6165531492499231.jpg");
+        contents.add("http://hbimg.b0.upaiyun.com/7d4c6aef54358fd38e49d50d297515ac214b31fb1983b-3tvkKK_fw658");
+        contents.add("http://img3.imgtn.bdimg.com/it/u=3902476913,1347930991&fm=27&gp=0.jpg");
+        contents.add("http://00.minipic.eastday.com/20170422/20170422173237_a786ee17d6fa822448fedce3a5d539bc_4.jpeg ");
+        contents.add("http://img0.ph.126.net/wtK03WIxAP5o5ToRavijKQ==/6631354738235145792.jpg");
+        contents.add("http://korea.people.com.cn/NMediaFile/2016/0713/FOREIGN201607130819000359343628549.jpg");
+        contents.add("http://img1.3lian.com/img013/v5/21/d/84.jpg");
+        contents.add("http://img17.3lian.com/d/file/201702/14/3d1d78481dbe5db4802f4b1eb548f365.jpg");
+        contents.add("http://img15.3lian.com/2015/f2/57/d/93.jpg");
+        contents.add("http://img1.3lian.com/2015/w6/53/d/85.jpg");
+        contents.add("http://pic1.win4000.com/pic/b/18/c1601227067.jpg");
+        contents.add("http://pic41.nipic.com/20140601/18681759_143805185000_2.jpg");
+        contents.add("http://pic30.nipic.com/20130605/12949204_213054651194_2.jpg");
+        contents.add("http://pic46.nipic.com/20140814/19268738_232534528000_2.jpg");
+        contents.add("http://hbimg.b0.upaiyun.com/dc2bffb262eab801646348ebacaa899f7786670f3c1fb-ZSyM5d_fw658");
+        contents.add("http://pic40.nipic.com/20140330/13328950_214049330194_2.jpg");
+        contents.add("http://imgtu.5011.net/uploads/content/20170418/6165531492499231.jpg");
+        contents.add("http://hbimg.b0.upaiyun.com/7d4c6aef54358fd38e49d50d297515ac214b31fb1983b-3tvkKK_fw658");
+        contents.add("http://img3.imgtn.bdimg.com/it/u=3902476913,1347930991&fm=27&gp=0.jpg");
+        contents.add("http://00.minipic.eastday.com/20170422/20170422173237_a786ee17d6fa822448fedce3a5d539bc_4.jpeg ");
+        contents.add("http://img0.ph.126.net/wtK03WIxAP5o5ToRavijKQ==/6631354738235145792.jpg");
+        contents.add("http://korea.people.com.cn/NMediaFile/2016/0713/FOREIGN201607130819000359343628549.jpg");
+        contents.add("http://img1.3lian.com/img013/v5/21/d/84.jpg");
+        contents.add("http://img17.3lian.com/d/file/201702/14/3d1d78481dbe5db4802f4b1eb548f365.jpg");
+        contents.add("http://img15.3lian.com/2015/f2/57/d/93.jpg");
+        contents.add("http://img1.3lian.com/2015/w6/53/d/85.jpg");
+        contents.add("http://pic1.win4000.com/pic/b/18/c1601227067.jpg");
+        contents.add("http://pic41.nipic.com/20140601/18681759_143805185000_2.jpg");
+        contents.add("http://pic30.nipic.com/20130605/12949204_213054651194_2.jpg");
+        contents.add("http://pic46.nipic.com/20140814/19268738_232534528000_2.jpg");
         List<StaggeredGridImageDataBean> data = new ArrayList<>();
         for (int j = 0; j < contents.size(); j++) {
             StaggeredGridImageDataBean s = new StaggeredGridImageDataBean();

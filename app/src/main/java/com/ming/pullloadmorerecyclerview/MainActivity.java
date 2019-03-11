@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ImageView imageView = findViewById(R.id.images);
-        Glide.with(this).load("http://img0.imgtn.bdimg.com/it/u=2847223552,3832031298&fm=26&gp=0.jpg").into(imageView);
+        Glide.with(this).load("http://img0.imgtn.bdimg.com/it/u=2847223552,3832031298&fm=26&gp=0.jpg").error(R.drawable.p3).into(imageView);
         listButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

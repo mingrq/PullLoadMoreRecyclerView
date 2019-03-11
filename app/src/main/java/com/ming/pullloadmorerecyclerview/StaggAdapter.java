@@ -56,7 +56,7 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
         if (context != null) {
             int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
 //Item的宽度，或图片的宽度
-            int swidth = (screenWidth-60) / 4;
+            int swidth = (screenWidth-30) / 2;
             int h = contents.get(i).getHeight();
             int w = contents.get(i).getWidth();
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myViewHolder.imageView.getLayoutParams();
@@ -64,7 +64,7 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
             int vh = (int) (swidth/sc);
             params.height = vh;
             myViewHolder.imageView.setLayoutParams(params);
-            Glide.with(context).load(contents.get(i).getUrl()).into(myViewHolder.imageView);
+            Glide.with(context).load(contents.get(i).getUrl()).error(R.drawable.p3).into(myViewHolder.imageView);
             myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

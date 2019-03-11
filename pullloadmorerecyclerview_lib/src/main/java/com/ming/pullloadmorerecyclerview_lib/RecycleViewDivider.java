@@ -12,7 +12,7 @@ import android.view.View;
 
 /**
  * 布局装饰器
- *
+ * <p>
  * Author MingRuQi
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/19 17:18
@@ -31,15 +31,21 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     private int verticalSpacing;
     private boolean verticalMargin;
     private boolean horizontalMargin;
+    private boolean isRefresh = true;
+    private boolean isMore = true;
 
     /**
      * 默认分割线：高度为2px，颜色为灰色
      *
      * @param context
+     * @param isRefresh 刷新
+     * @param isMore    加载更多
      */
-    public RecycleViewDivider(Context context, int layoutType) {
+    public RecycleViewDivider(Context context, int layoutType, boolean isRefresh, boolean isMore) {
         this.context = context;
         this.layoutType = layoutType;
+        this.isRefresh = isRefresh;
+        this.isMore = isMore;
     }
 
     @Override
@@ -92,7 +98,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 if (!horizontalMargin && !verticalMargin) {
                     outRect.left = column * horizontalSpacing / SpanCount;
                     outRect.right = verticalSpacing - (column + 1) * horizontalSpacing / SpanCount;
-                    if (index >=SpanCount) {
+                    if (index >= SpanCount) {
                         outRect.top = verticalSpacing;
                     }
                 }
@@ -107,7 +113,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
                 if (horizontalMargin && !verticalMargin) {
                     outRect.left = horizontalSpacing - column * horizontalSpacing / SpanCount;
                     outRect.right = (column + 1) * horizontalSpacing / SpanCount;
-                    if (index >=SpanCount) {
+                    if (index >= SpanCount) {
                         outRect.top = verticalSpacing;
                     }
                 }
@@ -122,9 +128,19 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 
                 break;
         }
-
+        if (isMore) {
+            //使用加载更多布局
+            if (isLastRow(view,parent)) {
+                outRect.set(0, 0, 0, 0);
+            }
+        }
     }
-
+    // 如果是最后一行
+    private boolean isLastRow(View view, RecyclerView parent) {
+        int position = parent.getChildAdapterPosition(view);
+        int count = parent.getAdapter().getItemCount();
+        return position == count - 1;
+    }
 
     @Override
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
