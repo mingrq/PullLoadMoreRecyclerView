@@ -12,6 +12,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -215,10 +218,23 @@ public class PullLoadMoreView extends FrameLayout {
      * 设置脚布局状态
      */
     public void setFooterType(int type) {
-        if (!isMore && customFooterView != null && footerCallBack != null) {
+        if (isMore && customFooterView != null && footerCallBack != null) {
             //使用自定义脚布局
-
+            switch (type) {
+                case MOREING://设置正在加载数据状态
+                    footerCallBack.moreing();
+                    break;
+                case NOMORE://设置完成加载数据无数据状态
+                    footerCallBack.noMore();
+                    break;
+                case LOADMOREERROR://设置加载数据错误状态
+                    footerCallBack.moreError();
+                    break;
+            }
+        } else {
+            footerView.setFooterType(type);
         }
+
     }
 
     /**
