@@ -27,6 +27,17 @@ public class LinerActivity extends AppCompatActivity {
                 .setAdapter(linerAdapter)
                 .setNeedRefreshAndMore(true,true)
                 .commit();
+        pullLoadMoreView.setOnPullLoadMoreListener(new PullLoadMoreView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
         List<Integer> contents = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             contents.add(i);

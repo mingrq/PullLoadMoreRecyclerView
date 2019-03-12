@@ -6,4 +6,6 @@
     <include layout="@layout/layout_footer_nomore" />
 
     <include layout="@layout/layout_footer_moreing" />
+
+    <include layout="@layout/layout_footer_loaderror" />
 </RelativeLayout>

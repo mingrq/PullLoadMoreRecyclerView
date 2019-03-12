@@ -1,7 +1,6 @@
 package com.ming.pullloadmorerecyclerview_lib;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,12 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
@@ -32,6 +29,10 @@ public class PullLoadMoreView extends FrameLayout {
 
     private static final int NODATA = 0x114254;//空数据页面
     private static final int CONNECTFAILED = 0x114255;//网络连接错误页面
+
+    public static final int NOMORE = 0x000123741;//设置完成加载数据无数据状态
+    public static final int MOREING = 0x000123742;//设置正在加载数据状态
+    public static final int LOADMOREERROR = 0x00123743;//设置加载数据错误状态
 
     /*布局类型*/
     private int layoutType;
@@ -52,7 +53,9 @@ public class PullLoadMoreView extends FrameLayout {
     private View noDataPage = null;
     private FrameLayout frameLayout;
     private LinearLayoutManager linearLayoutManager;
-    private View footerView;
+    private View customFooterView;
+    private PullLoadMoreFooterCallBack footerCallBack;
+    private FooterView footerView;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -95,7 +98,7 @@ public class PullLoadMoreView extends FrameLayout {
      * 设置分割线  LinerLayout布局使用
      */
     public PullLoadMoreView setDivider(int height, int color) {
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType,isRefresh,isMore);
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
         divider.setDrvider(height, color);
         recyclerView.addItemDecoration(divider);
         return this;
@@ -116,7 +119,7 @@ public class PullLoadMoreView extends FrameLayout {
         this.SpanCount = SpanCount;
         this.horizontalSpacing = horizontalSpacing;
         this.verticalSpacing = verticalSpacing;
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType,isRefresh,isMore);
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
         divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing, horizontalMargin, verticalMargin);
         recyclerView.addItemDecoration(divider);
         return this;
@@ -201,10 +204,21 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
-     * 设置正在刷新脚布局
+     * 设置脚布局
      */
-    public void setFooterView(View footerView) {
-        this.footerView = footerView;
+    public void setFooterView(View customFooterView, PullLoadMoreFooterCallBack footerCallBack) {
+        this.customFooterView = customFooterView;
+        this.footerCallBack = footerCallBack;
+    }
+
+    /**
+     * 设置脚布局状态
+     */
+    public void setFooterType(int type) {
+        if (!isMore && customFooterView != null && footerCallBack != null) {
+            //使用自定义脚布局
+
+        }
     }
 
     /**
@@ -261,19 +275,6 @@ public class PullLoadMoreView extends FrameLayout {
         }
     }
 
-    /**
-     * 上拉加载更多状态
-     */
-    public void moreing() {
-
-    }
-
-    /**
-     * 没有更多数据状态
-     */
-    public void noMore() {
-
-    }
 
     /**
      * 提交
@@ -306,26 +307,48 @@ public class PullLoadMoreView extends FrameLayout {
                 }
             });
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            recyclerView.setOnScrollChangeListener(new OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                int lastPosition = -1;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    //滑动停止
+                    RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                    if (layoutManager instanceof LinearLayoutManager) {
+                        lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    }
+                    if (layoutManager instanceof GridLayoutManager) {
+                        lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    }
+                    if ((layoutManager instanceof StaggeredGridLayoutManager)) {
+                        int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                        ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(lastPositions);
+                        lastPosition = findMax(lastPositions);
+                    }
                 }
-            });
-        } else {
-            recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
+                if (lastPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                    //滑动到最后一个
+                    pullLoadMoreListener.onLoadMore();
                 }
+            }
 
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
+            //找到数组中的最大值
+            private int findMax(int[] lastPositions) {
+                int max = lastPositions[0];
+                for (int value : lastPositions) {
+                    if (value > max) {
+                        max = value;
+                    }
                 }
-            });
-        }
+                return max;
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         PullLoadMoreViewAdapter pullLoadMoreViewAdapter = new PullLoadMoreViewAdapter(adapter);
         recyclerView.setAdapter(pullLoadMoreViewAdapter);
     }
@@ -344,6 +367,20 @@ public class PullLoadMoreView extends FrameLayout {
         void onLoadMore();
     }
 
+    /**
+     * 脚布局状态回调
+     */
+    public interface PullLoadMoreFooterCallBack {
+        //设置完成加载数据无数据
+        void noMore();
+
+        //设置正在加载数据
+        void moreing();
+
+        //设置加载数据错误
+        void moreError();
+    }
+
 
     public class PullLoadMoreViewAdapter extends RecyclerView.Adapter {
         private final int FOOTER = 0x0009012453;
@@ -357,25 +394,27 @@ public class PullLoadMoreView extends FrameLayout {
         public PullLoadMoreViewAdapter(RecyclerView.Adapter adapter) {
             this.adapter = adapter;
         }
+
         @Override
         public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
-            if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams&&holder.getLayoutPosition()==getItemCount()-1) {
+            if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams && holder.getLayoutPosition() == getItemCount() - 1) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 // 如果是刷新、加载更多或头布局、脚布局独占一行，否则按照设置展示
                 p.setFullSpan(true); // 设置独占一行
             }
         }
+
         @Override
         public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
             final RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-            if (manager instanceof GridLayoutManager){
+            if (manager instanceof GridLayoutManager) {
                 ((GridLayoutManager) manager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int i) {
                         int type = getItemViewType(i);
-                        if (type==FOOTER){
+                        if (type == FOOTER) {
                             return SpanCount;
                         }
                         return 1;
@@ -398,25 +437,11 @@ public class PullLoadMoreView extends FrameLayout {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             if (i == FOOTER) {
                 //脚布局
-                switch (layoutType) {
-                    case LINERLAYOUT://线性布局
-                        if (footerView == null) {
-                            return new FooterViewHolder(new FooterView(context));
-                        } else {
-                            return new FooterViewHolder(footerView);
-                        }
-                    case GRIDLAYOUT:
-                        if (footerView == null) {
-                            return new FooterViewHolder(new FooterView(context));
-                        } else {
-                            return new FooterViewHolder(footerView);
-                        }
-                    case STAGGEREDGRIDLAYOUT:
-                        if (footerView == null) {
-                            return new FooterViewHolder(new FooterView(context));
-                        } else {
-                            return new FooterViewHolder(footerView);
-                        }
+                if (customFooterView == null) {
+                    footerView = new FooterView(context);
+                    return new FooterViewHolder(footerView);
+                } else {
+                    return new FooterViewHolder(customFooterView);
                 }
             }
             return adapter.onCreateViewHolder(viewGroup, i);
