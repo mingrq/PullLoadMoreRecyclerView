@@ -3,7 +3,7 @@
     android:id="@+id/layout_loaderror"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
+    android:visibility="invisible">
 
     <TextView
         android:layout_width="match_parent"
@@ -11,6 +11,6 @@
         android:gravity="center"
         android:padding="16dp"
         android:textColor="#cdcdcd"
-        android:text="加载错误"
+        android:text="数据加载错误"
         android:textSize="16sp" />
 </RelativeLayout>

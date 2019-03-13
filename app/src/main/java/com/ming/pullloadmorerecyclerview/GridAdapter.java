@@ -43,10 +43,10 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> 
             ((GridLayoutManager) manager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int i) {
-                    if (i > 6) {
+                    if (i < 6) {
                         return 2;
                     }
-                    if (i > 6 && i < 12) {
+                    if (i>=6&&i<12){
                         return 4;
                     }
                     return 1;

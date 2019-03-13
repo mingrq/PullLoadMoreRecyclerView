@@ -16,20 +16,19 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 11:31
  */
-public class GridActivity extends AppCompatActivity{
+public class GridActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         GridAdapter gridAdapter = new GridAdapter(this);
-        PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
+        final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
-                .setSpacing(4,10,10,true,true)
+                .setSpacing(4, 10, 10, true, true)
                 .setAdapter(gridAdapter)
-                .setNeedRefreshAndMore(true,true)
-                .commit();
-       // pullLoadMoreView.openNoDataPage();
+                .setNeedRefreshAndMore(true, true);
+        // pullLoadMoreView.openNoDataPage();
         //pullLoadMoreView.openConnectFailedPage();
         List<Integer> contents = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
@@ -39,13 +38,15 @@ public class GridActivity extends AppCompatActivity{
         pullLoadMoreView.setOnPullLoadMoreListener(new PullLoadMoreView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(GridActivity.this,"ghjghg",Toast.LENGTH_LONG).show();
+                Toast.makeText(GridActivity.this, "ghjghg", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onLoadMore() {
-
+                Toast.makeText(GridActivity.this, "test", Toast.LENGTH_LONG).show();
+                pullLoadMoreView.setFooterType(PullLoadMoreView.NOMORE);
             }
         });
+        pullLoadMoreView.commit();
     }
 }

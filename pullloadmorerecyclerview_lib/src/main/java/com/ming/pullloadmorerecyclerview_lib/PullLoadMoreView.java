@@ -9,12 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -46,8 +44,6 @@ public class PullLoadMoreView extends FrameLayout {
     //适配器
     private RecyclerView.Adapter adapter;
     private GridLayoutManager gridLayoutManager;
-    private int horizontalSpacing;
-    private int verticalSpacing;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean isRefresh = true;
     private boolean isMore = true;
@@ -56,9 +52,8 @@ public class PullLoadMoreView extends FrameLayout {
     private View noDataPage = null;
     private FrameLayout frameLayout;
     private LinearLayoutManager linearLayoutManager;
-    private View customFooterView;
+    private View footerView = null;
     private PullLoadMoreFooterCallBack footerCallBack;
-    private FooterView footerView;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -76,299 +71,6 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView = findViewById(R.id.recycle);
         frameLayout = findViewById(R.id.fly_pullloadmore);
     }
-    /**---------------------------对外方法------------------------------------*/
-
-
-    /**
-     * 设置布局方式
-     *
-     * @param layoutType 布局方式
-     */
-    public PullLoadMoreView setLayoutType(int layoutType) {
-        this.layoutType = layoutType;
-        return this;
-    }
-
-    /**
-     * 设置适配器
-     */
-    public PullLoadMoreView setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
-        return this;
-    }
-
-    /**
-     * 设置分割线  LinerLayout布局使用
-     */
-    public PullLoadMoreView setDivider(int height, int color) {
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
-        divider.setDrvider(height, color);
-        recyclerView.addItemDecoration(divider);
-        return this;
-    }
-
-    /**
-     * 设置间距  GridLayout、StaggeredGridLayout布局使用
-     * <p>
-     *
-     * @param SpanCount         跨距数
-     * @param horizontalSpacing 水平间距
-     * @param verticalSpacing   垂直间距
-     * @param verticalMargin    是否需要上下边距
-     * @param horizontalMargin  是否需要左右边距
-     * @return
-     */
-    public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin) {
-        this.SpanCount = SpanCount;
-        this.horizontalSpacing = horizontalSpacing;
-        this.verticalSpacing = verticalSpacing;
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
-        divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing, horizontalMargin, verticalMargin);
-        recyclerView.addItemDecoration(divider);
-        return this;
-    }
-
-    /**
-     * 设置自定义分割线
-     */
-    public PullLoadMoreView setCustomDivider(RecyclerView.ItemDecoration itemDecoration) {
-        recyclerView.addItemDecoration(itemDecoration);
-        return this;
-    }
-
-    /**
-     * 是否需要下拉刷新上拉加载功能
-     *
-     * @param isRefresh 刷新
-     * @param isMore    加载更多
-     */
-    public PullLoadMoreView setNeedRefreshAndMore(boolean isRefresh, boolean isMore) {
-        this.isRefresh = isRefresh;
-        this.isMore = isMore;
-        return this;
-    }
-
-    /**
-     * 设置刷新状态
-     *
-     * @param isRefreshing
-     */
-    public void setRefreshing(boolean isRefreshing) {
-        swipeRefreshLayout.setRefreshing(isRefreshing);
-    }
-
-    /**
-     * 设置正在加载数据状态
-     *
-     * @param isLoadMoreing
-     */
-    public void setLoadMoreing(boolean isLoadMoreing) {
-
-    }
-
-    /**
-     * 设置下拉刷新上拉加载监听
-     *
-     * @param pullLoadMoreListener
-     */
-    public void setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
-        this.pullLoadMoreListener = pullLoadMoreListener;
-    }
-
-    /**
-     * 设置空数据页面
-     *
-     * @param noDataPage
-     * @return
-     */
-    public PullLoadMoreView setNoDataPage(View noDataPage) {
-        this.noDataPage = noDataPage;
-        return this;
-    }
-
-    /**
-     * 打开空数据页面
-     */
-    public void openNoDataPage() {
-        if (noDataPage == null) {
-            //没有自定义，使用默认页面
-            noDataPage = new NoDataView(context);
-            noDataPage.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "空数据", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        if (frameLayout != null) {
-            frameLayout.addView(noDataPage);
-            showPage(NODATA);
-        }
-    }
-
-    /**
-     * 设置脚布局
-     */
-    public void setFooterView(View customFooterView, PullLoadMoreFooterCallBack footerCallBack) {
-        this.customFooterView = customFooterView;
-        this.footerCallBack = footerCallBack;
-    }
-
-    /**
-     * 设置脚布局状态
-     */
-    public void setFooterType(int type) {
-        if (isMore && customFooterView != null && footerCallBack != null) {
-            //使用自定义脚布局
-            switch (type) {
-                case MOREING://设置正在加载数据状态
-                    footerCallBack.moreing();
-                    break;
-                case NOMORE://设置完成加载数据无数据状态
-                    footerCallBack.noMore();
-                    break;
-                case LOADMOREERROR://设置加载数据错误状态
-                    footerCallBack.moreError();
-                    break;
-            }
-        } else {
-            footerView.setFooterType(type);
-        }
-
-    }
-
-    /**
-     * 设置网络连接失败页面
-     *
-     * @param connectFailedPage
-     * @return
-     */
-    public PullLoadMoreView setConnectFailedPage(View connectFailedPage) {
-        this.connectFailedPage = connectFailedPage;
-        return this;
-    }
-
-    /**
-     * 打开网络连接失败页面
-     */
-    public void openConnectFailedPage() {
-        if (connectFailedPage == null) {
-            //没有自定义，使用默认页面
-            connectFailedPage = new ConnectFailedView(context);
-            connectFailedPage.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "网络连接失败", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        if (frameLayout != null) {
-            frameLayout.addView(connectFailedPage);
-            showPage(CONNECTFAILED);
-        }
-    }
-
-    /**
-     * 设置显示的页面
-     *
-     * @param page
-     */
-    private void showPage(int page) {
-        recyclerView.setVisibility(GONE);
-        if (noDataPage != null) {
-            if (page == NODATA) {
-                noDataPage.setVisibility(VISIBLE);
-            } else {
-                noDataPage.setVisibility(GONE);
-            }
-        }
-        if (connectFailedPage != null) {
-            if (page == CONNECTFAILED) {
-                connectFailedPage.setVisibility(VISIBLE);
-            } else {
-                connectFailedPage.setVisibility(GONE);
-            }
-        }
-    }
-
-
-    /**
-     * 提交
-     */
-    public void commit() {
-        switch (layoutType) {
-            case LINERLAYOUT:
-                linearLayoutManager = new LinearLayoutManager(context);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                break;
-            case GRIDLAYOUT:
-                gridLayoutManager = new GridLayoutManager(context, SpanCount, LinearLayoutManager.VERTICAL, false);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                break;
-            case STAGGEREDGRIDLAYOUT:
-                staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
-                staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-                recyclerView.setLayoutManager(staggeredGridLayoutManager);
-                staggeredGridLayoutManager.invalidateSpanAssignments();
-                break;
-        }
-        swipeRefreshLayout.setEnabled(isRefresh);//设置是否启动下拉刷新
-
-        //为RecyclerView设置刷新监听
-        if (isRefresh && pullLoadMoreListener != null) {
-            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    pullLoadMoreListener.onRefresh();
-                }
-            });
-        }
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                int lastPosition = -1;
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    //滑动停止
-                    RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                    if (layoutManager instanceof LinearLayoutManager) {
-                        lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                    }
-                    if (layoutManager instanceof GridLayoutManager) {
-                        lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-                    }
-                    if ((layoutManager instanceof StaggeredGridLayoutManager)) {
-                        int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                        ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(lastPositions);
-                        lastPosition = findMax(lastPositions);
-                    }
-                }
-                if (lastPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                    //滑动到最后一个
-                    pullLoadMoreListener.onLoadMore();
-                }
-            }
-
-            //找到数组中的最大值
-            private int findMax(int[] lastPositions) {
-                int max = lastPositions[0];
-                for (int value : lastPositions) {
-                    if (value > max) {
-                        max = value;
-                    }
-                }
-                return max;
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-        PullLoadMoreViewAdapter pullLoadMoreViewAdapter = new PullLoadMoreViewAdapter(adapter);
-        recyclerView.setAdapter(pullLoadMoreViewAdapter);
-    }
-
 
     /*------------------------------------------接口---------------------------------------------------------*/
 
@@ -388,13 +90,13 @@ public class PullLoadMoreView extends FrameLayout {
      */
     public interface PullLoadMoreFooterCallBack {
         //设置完成加载数据无数据
-        void noMore();
+        void noMore(View footerView);
 
         //设置正在加载数据
-        void moreing();
+        void moreing(View footerView);
 
         //设置加载数据错误
-        void moreError();
+        void moreError(View footerView);
     }
 
 
@@ -424,18 +126,21 @@ public class PullLoadMoreView extends FrameLayout {
         @Override
         public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
+            adapter.onAttachedToRecyclerView(recyclerView);
             final RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
             if (manager instanceof GridLayoutManager) {
-                ((GridLayoutManager) manager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                final GridLayoutManager.SpanSizeLookup spanSizeLookup = ((GridLayoutManager) manager).getSpanSizeLookup();
+                GridLayoutManager.SpanSizeLookup sizeLookup = new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int i) {
                         int type = getItemViewType(i);
                         if (type == FOOTER) {
                             return SpanCount;
                         }
-                        return 1;
+                        return spanSizeLookup.getSpanSize(i);
                     }
-                });
+                };
+                ((GridLayoutManager) manager).setSpanSizeLookup(sizeLookup);
             }
         }
 
@@ -453,12 +158,11 @@ public class PullLoadMoreView extends FrameLayout {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             if (i == FOOTER) {
                 //脚布局
-                if (customFooterView == null) {
+                if (footerView == null) {
                     footerView = new FooterView(context);
-                    return new FooterViewHolder(footerView);
-                } else {
-                    return new FooterViewHolder(customFooterView);
                 }
+                return new FooterViewHolder(footerView);
+
             }
             return adapter.onCreateViewHolder(viewGroup, i);
         }
@@ -505,6 +209,294 @@ public class PullLoadMoreView extends FrameLayout {
             super(itemView);
         }
     }
+
+
+    /**---------------------------对外方法------------------------------------*/
+
+
+    /**
+     * 设置布局方式
+     *
+     * @param layoutType 布局方式
+     */
+    public PullLoadMoreView setLayoutType(int layoutType) {
+        this.layoutType = layoutType;
+        return this;
+    }
+
+    /**
+     * 设置适配器
+     */
+    public PullLoadMoreView setAdapter(RecyclerView.Adapter adapter) {
+        this.adapter = adapter;
+        return this;
+    }
+
+    /**
+     * 设置分割线  LinerLayout布局使用
+     */
+    public PullLoadMoreView setDivider(int height, int color) {
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
+        divider.setDrvider(height, color);
+        recyclerView.addItemDecoration(divider);
+        return this;
+    }
+
+    /**
+     * 设置间距  GridLayout、StaggeredGridLayout布局使用
+     * <p>
+     *
+     * @param SpanCount         跨距数
+     * @param horizontalSpacing 水平间距
+     * @param verticalSpacing   垂直间距
+     * @param verticalMargin    是否需要上下边距
+     * @param horizontalMargin  是否需要左右边距
+     * @return
+     */
+    public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin) {
+        this.SpanCount = SpanCount;
+        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
+        divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing, horizontalMargin, verticalMargin);
+        recyclerView.addItemDecoration(divider);
+        return this;
+    }
+
+    /**
+     * 设置自定义分割线
+     */
+    public PullLoadMoreView setCustomDivider(RecyclerView.ItemDecoration itemDecoration) {
+        recyclerView.addItemDecoration(itemDecoration);
+        return this;
+    }
+
+    /**
+     * 是否需要下拉刷新上拉加载功能
+     *
+     * @param isRefresh 刷新
+     * @param isMore    加载更多
+     */
+    public PullLoadMoreView setNeedRefreshAndMore(boolean isRefresh, boolean isMore) {
+        this.isRefresh = isRefresh;
+        this.isMore = isMore;
+        return this;
+    }
+
+
+    /**
+     * 设置下拉刷新上拉加载监听
+     *
+     * @param pullLoadMoreListener
+     */
+    public PullLoadMoreView setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
+        this.pullLoadMoreListener = pullLoadMoreListener;
+        return this;
+    }
+
+    /**
+     * 设置空数据页面
+     *
+     * @param noDataPage
+     * @return
+     */
+    public PullLoadMoreView setNoDataPage(View noDataPage) {
+        this.noDataPage = noDataPage;
+        return this;
+    }
+
+    /**
+     * 设置脚布局
+     */
+    public PullLoadMoreView setFooterView(View customFooterView, PullLoadMoreFooterCallBack footerCallBack) {
+        this.footerView = customFooterView;
+        this.footerCallBack = footerCallBack;
+        return this;
+    }
+
+    /**
+     * 设置网络连接失败页面
+     *
+     * @param connectFailedPage
+     * @return
+     */
+    public PullLoadMoreView setConnectFailedPage(View connectFailedPage) {
+        this.connectFailedPage = connectFailedPage;
+        return this;
+    }
+
+    /**
+     * 提交
+     */
+    public void commit() {
+        switch (layoutType) {
+            case LINERLAYOUT:
+                linearLayoutManager = new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                break;
+            case GRIDLAYOUT:
+                gridLayoutManager = new GridLayoutManager(context, SpanCount, LinearLayoutManager.VERTICAL, false);
+                recyclerView.setLayoutManager(gridLayoutManager);
+                break;
+            case STAGGEREDGRIDLAYOUT:
+                staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
+                staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                staggeredGridLayoutManager.invalidateSpanAssignments();
+                break;
+        }
+        swipeRefreshLayout.setEnabled(isRefresh);//设置是否启动下拉刷新
+
+        //为RecyclerView设置刷新监听
+        if (isRefresh && pullLoadMoreListener != null) {
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+                    pullLoadMoreListener.onRefresh();
+                }
+            });
+        }
+        if (isMore && pullLoadMoreListener != null) {
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    int lastPosition = -1;
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        //滑动停止
+                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                        if (layoutManager instanceof LinearLayoutManager) {
+                            lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        }
+                        if (layoutManager instanceof GridLayoutManager) {
+                            lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        }
+                        if ((layoutManager instanceof StaggeredGridLayoutManager)) {
+                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(lastPositions);
+                            lastPosition = findMax(lastPositions);
+                        }
+                    }
+                    int itemcount = recyclerView.getAdapter().getItemCount() - 1;
+                    if (lastPosition == itemcount) {
+                        //滑动到最后一个
+                        pullLoadMoreListener.onLoadMore();
+
+                    }
+                }
+
+                //找到数组中的最大值
+                private int findMax(int[] lastPositions) {
+                    int max = lastPositions[0];
+                    for (int value : lastPositions) {
+                        if (value > max) {
+                            max = value;
+                        }
+                    }
+                    return max;
+                }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+        }
+        PullLoadMoreViewAdapter pullLoadMoreViewAdapter = new PullLoadMoreViewAdapter(adapter);
+        recyclerView.setAdapter(pullLoadMoreViewAdapter);
+    }
+
+    /**
+     * 设置刷新状态
+     *
+     * @param isRefreshing
+     */
+    public void setRefreshing(boolean isRefreshing) {
+        swipeRefreshLayout.setRefreshing(isRefreshing);
+    }
+
+    /**
+     * 打开空数据页面
+     */
+    public void openNoDataPage() {
+        if (noDataPage == null) {
+            //没有自定义，使用默认页面
+            noDataPage = new NoDataView(context);
+            noDataPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "空数据", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        if (frameLayout != null) {
+            frameLayout.addView(noDataPage);
+            showPage(NODATA);
+        }
+    }
+
+    /**
+     * 设置脚布局状态
+     */
+    public void setFooterType(int type) {
+        if (isMore && footerView != null && footerCallBack != null) {
+            //使用自定义脚布局
+            switch (type) {
+                case MOREING://设置正在加载数据状态
+                    footerCallBack.moreing(footerView);
+                    break;
+                case NOMORE://设置完成加载数据无数据状态
+                    footerCallBack.noMore(footerView);
+                    break;
+                case LOADMOREERROR://设置加载数据错误状态
+                    footerCallBack.moreError(footerView);
+                    break;
+            }
+        } else {
+            ((FooterView) footerView).setFooterType(type);
+        }
+
+    }
+
+
+    /**
+     * 打开网络连接失败页面
+     */
+    public void openConnectFailedPage() {
+        if (connectFailedPage == null) {
+            //没有自定义，使用默认页面
+            connectFailedPage = new ConnectFailedView(context);
+            connectFailedPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "网络连接失败", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        if (frameLayout != null) {
+            frameLayout.addView(connectFailedPage);
+            showPage(CONNECTFAILED);
+        }
+    }
+
+    /**
+     * 设置显示的页面
+     *
+     * @param page
+     */
+    private void showPage(int page) {
+        recyclerView.setVisibility(GONE);
+        if (noDataPage != null) {
+            if (page == NODATA) {
+                noDataPage.setVisibility(VISIBLE);
+            } else {
+                noDataPage.setVisibility(GONE);
+            }
+        }
+        if (connectFailedPage != null) {
+            if (page == CONNECTFAILED) {
+                connectFailedPage.setVisibility(VISIBLE);
+            } else {
+                connectFailedPage.setVisibility(GONE);
+            }
+        }
+    }
 }
-
-

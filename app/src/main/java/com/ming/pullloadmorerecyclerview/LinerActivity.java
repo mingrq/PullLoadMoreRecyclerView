@@ -20,13 +20,12 @@ public class LinerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liner);
         LinerAdapter linerAdapter = new LinerAdapter(this);
-        PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_liner);
+        final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_liner);
         pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.LINERLAYOUT)
-                .setDivider(1,getResources().getColor(R.color.colorPrimaryDark))
+                .setDivider(1, getResources().getColor(R.color.colorPrimaryDark))
                 .setAdapter(linerAdapter)
-                .setNeedRefreshAndMore(true,true)
-                .commit();
+                .setNeedRefreshAndMore(true, true);
         pullLoadMoreView.setOnPullLoadMoreListener(new PullLoadMoreView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
@@ -35,14 +34,14 @@ public class LinerActivity extends AppCompatActivity {
 
             @Override
             public void onLoadMore() {
-
+                pullLoadMoreView.setFooterType(PullLoadMoreView.NOMORE);
             }
         });
+        pullLoadMoreView.commit();
         List<Integer> contents = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             contents.add(i);
         }
         linerAdapter.setContents(contents);
-
     }
 }

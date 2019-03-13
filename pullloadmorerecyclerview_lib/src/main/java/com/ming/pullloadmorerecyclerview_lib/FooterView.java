@@ -53,8 +53,8 @@ public class FooterView extends RelativeLayout {
     public void setFooterType(int type) {
         switch (type){
             case MOREING://设置正在加载数据状态
-                noMoreLayout.setVisibility(GONE);
-                errorLayout.setVisibility(GONE);
+                noMoreLayout.setVisibility(INVISIBLE);
+                errorLayout.setVisibility(INVISIBLE);
                 moreingLayout.setVisibility(VISIBLE);
                 animation = new RotateAnimation(0, +359, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 animation.setDuration(700);
@@ -65,13 +65,13 @@ public class FooterView extends RelativeLayout {
                 break;
             case NOMORE://设置完成加载数据无数据状态
                 noMoreLayout.setVisibility(VISIBLE);
-                moreingLayout.setVisibility(GONE);
-                errorLayout.setVisibility(GONE);
+                moreingLayout.setVisibility(INVISIBLE);
+                errorLayout.setVisibility(INVISIBLE);
                 iv_moreing.clearAnimation();
                 break;
             case LOADMOREERROR://设置加载数据错误状态
-                noMoreLayout.setVisibility(GONE);
-                moreingLayout.setVisibility(GONE);
+                noMoreLayout.setVisibility(INVISIBLE);
+                moreingLayout.setVisibility(INVISIBLE);
                 errorLayout.setVisibility(VISIBLE);
                 iv_moreing.clearAnimation();
                 break;
