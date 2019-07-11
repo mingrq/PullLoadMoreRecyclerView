@@ -224,17 +224,6 @@ public class PullLoadMoreView extends FrameLayout {
     public PullLoadMoreView setNeedRefreshAndMore(boolean isRefresh, boolean isMore) {
         this.isRefresh = isRefresh;
         this.isMore = isMore;
-
-        return this;
-    }
-
-    /**
-     * 设置下拉刷新上拉加载监听
-     *
-     * @param pullLoadMoreListener
-     */
-    public PullLoadMoreView setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
-        this.pullLoadMoreListener = pullLoadMoreListener;
         return this;
     }
 
@@ -249,6 +238,16 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
+     * 设置下拉刷新上拉加载监听
+     *
+     * @param pullLoadMoreListener
+     */
+    public PullLoadMoreView setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
+        this.pullLoadMoreListener = pullLoadMoreListener;
+        return this;
+    }
+//---------------------LinerLayout布局使用-----------------
+    /**
      * 设置分割线  LinerLayout布局使用
      */
     public PullLoadMoreView setDivider(int height, int color) {
@@ -257,6 +256,15 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView.addItemDecoration(divider);
         return this;
     }
+
+    /**
+     * 设置自定义分割线
+     */
+    public PullLoadMoreView setCustomDivider(RecyclerView.ItemDecoration itemDecoration) {
+        recyclerView.addItemDecoration(itemDecoration);
+        return this;
+    }
+//------------------------
 
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
@@ -277,15 +285,6 @@ public class PullLoadMoreView extends FrameLayout {
         return this;
     }
 
-    /**
-     * 设置自定义分割线
-     */
-    public PullLoadMoreView setCustomDivider(RecyclerView.ItemDecoration itemDecoration) {
-        recyclerView.addItemDecoration(itemDecoration);
-        return this;
-    }
-
-
 
     /**
      * 设置适配器
@@ -294,8 +293,6 @@ public class PullLoadMoreView extends FrameLayout {
         this.adapter = adapter;
         return this;
     }
-
-
 
     /**
      * 设置空数据页面
