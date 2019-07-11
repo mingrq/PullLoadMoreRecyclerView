@@ -213,6 +213,30 @@ public class PullLoadMoreView extends FrameLayout {
 
     /**---------------------------对外方法------------------------------------*/
 
+//-----------------------------------------------------------------初始化控件方法-------------------------------------------------------------------
+
+    /**
+     * 是否需要下拉刷新上拉加载功能
+     *
+     * @param isRefresh 刷新
+     * @param isMore    加载更多
+     */
+    public PullLoadMoreView setNeedRefreshAndMore(boolean isRefresh, boolean isMore) {
+        this.isRefresh = isRefresh;
+        this.isMore = isMore;
+
+        return this;
+    }
+
+    /**
+     * 设置下拉刷新上拉加载监听
+     *
+     * @param pullLoadMoreListener
+     */
+    public PullLoadMoreView setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
+        this.pullLoadMoreListener = pullLoadMoreListener;
+        return this;
+    }
 
     /**
      * 设置布局方式
@@ -221,14 +245,6 @@ public class PullLoadMoreView extends FrameLayout {
      */
     public PullLoadMoreView setLayoutType(int layoutType) {
         this.layoutType = layoutType;
-        return this;
-    }
-
-    /**
-     * 设置适配器
-     */
-    public PullLoadMoreView setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
         return this;
     }
 
@@ -269,28 +285,17 @@ public class PullLoadMoreView extends FrameLayout {
         return this;
     }
 
+
+
     /**
-     * 是否需要下拉刷新上拉加载功能
-     *
-     * @param isRefresh 刷新
-     * @param isMore    加载更多
+     * 设置适配器
      */
-    public PullLoadMoreView setNeedRefreshAndMore(boolean isRefresh, boolean isMore) {
-        this.isRefresh = isRefresh;
-        this.isMore = isMore;
+    public PullLoadMoreView setAdapter(RecyclerView.Adapter adapter) {
+        this.adapter = adapter;
         return this;
     }
 
 
-    /**
-     * 设置下拉刷新上拉加载监听
-     *
-     * @param pullLoadMoreListener
-     */
-    public PullLoadMoreView setOnPullLoadMoreListener(PullLoadMoreListener pullLoadMoreListener) {
-        this.pullLoadMoreListener = pullLoadMoreListener;
-        return this;
-    }
 
     /**
      * 设置空数据页面
@@ -327,6 +332,9 @@ public class PullLoadMoreView extends FrameLayout {
      * 提交
      */
     public void commit() {
+        //设置是否启动下拉刷新
+        swipeRefreshLayout.setEnabled(isRefresh);
+        //设置控件布局方式
         switch (layoutType) {
             case LINERLAYOUT:
                 linearLayoutManager = new LinearLayoutManager(context);
@@ -343,18 +351,17 @@ public class PullLoadMoreView extends FrameLayout {
                 staggeredGridLayoutManager.invalidateSpanAssignments();
                 break;
         }
-        swipeRefreshLayout.setEnabled(isRefresh);//设置是否启动下拉刷新
 
         //为RecyclerView设置刷新监听
         if (isRefresh && pullLoadMoreListener != null) {
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-
                     pullLoadMoreListener.onRefresh();
                 }
             });
         }
+        //为RecyclerView设置加载更多监听
         if (isMore && pullLoadMoreListener != null) {
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -404,13 +411,22 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView.setAdapter(pullLoadMoreViewAdapter);
     }
 
+    //-------------------------------------------------------控件操作方法--------------------------------------------------------------
     /**
-     * 设置刷新状态
+     * 设置刷新状态-只是状态
      *
      * @param isRefreshing
      */
     public void setRefreshing(boolean isRefreshing) {
         swipeRefreshLayout.setRefreshing(isRefreshing);
+    }
+
+    /**
+     * 刷新
+     */
+    public void onRefresh() {
+        if (pullLoadMoreListener != null)
+            pullLoadMoreListener.onRefresh();
     }
 
     /**
