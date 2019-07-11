@@ -1,4 +1,4 @@
-package com.ming.pullloadmorerecyclerview_lib;
+package com.ming.pullloadmorerecyclerview_lib.layout;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.ming.pullloadmorerecyclerview_lib.R;
 
 /**
  * 默认空数据页面
@@ -29,6 +31,7 @@ public class NoDataView extends FrameLayout {
 
     public NoDataView(final Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.layout_nodata, this);
+       View view= View.inflate(context,R.layout.layout_nodata, this);
+
     }
 }

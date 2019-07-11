@@ -9,12 +9,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.ming.pullloadmorerecyclerview_lib.layout.ConnectFailedView;
+import com.ming.pullloadmorerecyclerview_lib.layout.FooterView;
 
 /**
  * 下拉刷新上拉加载控件
@@ -36,7 +38,7 @@ public class PullLoadMoreView extends FrameLayout {
     public static final int LOADMOREERROR = 0x00123743;//设置加载数据错误状态
 
     /*布局类型*/
-    private int layoutType;
+    private int layoutType = LINERLAYOUT;
     private int SpanCount;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -54,6 +56,7 @@ public class PullLoadMoreView extends FrameLayout {
     private LinearLayoutManager linearLayoutManager;
     private View footerView = null;
     private PullLoadMoreFooterCallBack footerCallBack;
+    private RecycleViewDivider divider;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -246,12 +249,15 @@ public class PullLoadMoreView extends FrameLayout {
         this.pullLoadMoreListener = pullLoadMoreListener;
         return this;
     }
-//---------------------LinerLayout布局使用-----------------
+//-------------------------------------LinerLayout布局使用-------------------------------------
+
     /**
      * 设置分割线  LinerLayout布局使用
      */
     public PullLoadMoreView setDivider(int height, int color) {
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
+        if (divider == null) {
+            divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
+        }
         divider.setDrvider(height, color);
         recyclerView.addItemDecoration(divider);
         return this;
@@ -264,7 +270,8 @@ public class PullLoadMoreView extends FrameLayout {
         recyclerView.addItemDecoration(itemDecoration);
         return this;
     }
-//------------------------
+
+//------------------------------GridLayout、StaggeredGridLayout布局使用---------------------------------------
 
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
@@ -279,29 +286,20 @@ public class PullLoadMoreView extends FrameLayout {
      */
     public PullLoadMoreView setSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin) {
         this.SpanCount = SpanCount;
-        RecycleViewDivider divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
+        if (divider == null) {
+            divider = new RecycleViewDivider(context, layoutType, isRefresh, isMore);
+        }
         divider.setSpacing(SpanCount, horizontalSpacing, verticalSpacing, horizontalMargin, verticalMargin);
         recyclerView.addItemDecoration(divider);
         return this;
     }
-
+//------------------------------公用初始化方法---------------------------------------
 
     /**
      * 设置适配器
      */
     public PullLoadMoreView setAdapter(RecyclerView.Adapter adapter) {
         this.adapter = adapter;
-        return this;
-    }
-
-    /**
-     * 设置空数据页面
-     *
-     * @param noDataPage
-     * @return
-     */
-    public PullLoadMoreView setNoDataPage(View noDataPage) {
-        this.noDataPage = noDataPage;
         return this;
     }
 
@@ -315,6 +313,18 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
+     * 设置空数据页面
+     *
+     * @param noDataPage
+     * @return
+     */
+    public PullLoadMoreView setNoDataPage(View noDataPage) {
+        this.noDataPage = noDataPage;
+        frameLayout.addView(noDataPage);
+        return this;
+    }
+
+    /**
      * 设置网络连接失败页面
      *
      * @param connectFailedPage
@@ -322,6 +332,7 @@ public class PullLoadMoreView extends FrameLayout {
      */
     public PullLoadMoreView setConnectFailedPage(View connectFailedPage) {
         this.connectFailedPage = connectFailedPage;
+        frameLayout.addView(connectFailedPage);
         return this;
     }
 
@@ -409,6 +420,7 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     //-------------------------------------------------------控件操作方法--------------------------------------------------------------
+
     /**
      * 设置刷新状态-只是状态
      *
@@ -426,25 +438,7 @@ public class PullLoadMoreView extends FrameLayout {
             pullLoadMoreListener.onRefresh();
     }
 
-    /**
-     * 打开空数据页面
-     */
-    public void openNoDataPage() {
-        if (noDataPage == null) {
-            //没有自定义，使用默认页面
-            noDataPage = new NoDataView(context);
-            noDataPage.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "空数据", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        if (frameLayout != null) {
-            frameLayout.addView(noDataPage);
-            showPage(NODATA);
-        }
-    }
+
 
     /**
      * 设置脚布局状态
@@ -469,6 +463,31 @@ public class PullLoadMoreView extends FrameLayout {
 
     }
 
+    /**
+     * 打开空数据页面
+     */
+    public void openNoDataPage() {
+        if (noDataPage == null) {
+            //没有自定义，使用默认页面
+            noDataPage = View.inflate(context, R.layout.layout_nodata, null);
+            noDataPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRefresh();
+                }
+            });
+            frameLayout.addView(noDataPage);
+           /* noDataPage = new NoDataView(context);
+            frameLayout.addView(noDataPage);
+            noDataPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRefresh();
+                }
+            });*/
+        }
+        showPage(NODATA);
+    }
 
     /**
      * 打开网络连接失败页面
@@ -476,18 +495,24 @@ public class PullLoadMoreView extends FrameLayout {
     public void openConnectFailedPage() {
         if (connectFailedPage == null) {
             //没有自定义，使用默认页面
-            connectFailedPage = new ConnectFailedView(context);
+            connectFailedPage= View.inflate(context, R.layout.layout_connectfailed, null);
             connectFailedPage.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "网络连接失败", Toast.LENGTH_LONG).show();
                 }
             });
-        }
-        if (frameLayout != null) {
             frameLayout.addView(connectFailedPage);
-            showPage(CONNECTFAILED);
+            /*connectFailedPage = new ConnectFailedView(context);
+            frameLayout.addView(connectFailedPage);
+            connectFailedPage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "网络连接失败", Toast.LENGTH_LONG).show();
+                }
+            });*/
         }
+        showPage(CONNECTFAILED);
     }
 
     /**

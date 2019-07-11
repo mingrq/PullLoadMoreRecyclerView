@@ -1,4 +1,4 @@
-package com.ming.pullloadmorerecyclerview_lib;
+package com.ming.pullloadmorerecyclerview_lib.layout;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,6 +11,8 @@ import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.ming.pullloadmorerecyclerview_lib.R;
 
 /**
  * Author MingRuQi

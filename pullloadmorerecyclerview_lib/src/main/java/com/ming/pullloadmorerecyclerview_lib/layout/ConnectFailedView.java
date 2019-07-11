@@ -1,9 +1,11 @@
-package com.ming.pullloadmorerecyclerview_lib;
+package com.ming.pullloadmorerecyclerview_lib.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
+
+import com.ming.pullloadmorerecyclerview_lib.R;
 
 /**
  * 默认网络连接失败页面
