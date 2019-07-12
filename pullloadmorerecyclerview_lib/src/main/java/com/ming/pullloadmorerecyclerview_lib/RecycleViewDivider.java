@@ -2,8 +2,10 @@ package com.ming.pullloadmorerecyclerview_lib;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -148,7 +150,11 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         switch (layoutType) {
             case LINERLAYOUT:
                 Paint paint = new Paint();
-                paint.setColor(color);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    paint.setColor(context.getColor(color));
+                }else {
+                    paint.setColor(context.getResources().getColor(color));
+                }
                 int childCount = parent.getChildCount();
                 for (int i = 0; i < childCount; i++) {
                     View view = parent.getChildAt(i);

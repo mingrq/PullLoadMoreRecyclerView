@@ -10,6 +10,5 @@
         android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
-        android:text="测试"
-        android:background="#b4b4b4"/>
+        android:text="测试" />
 </RelativeLayout>

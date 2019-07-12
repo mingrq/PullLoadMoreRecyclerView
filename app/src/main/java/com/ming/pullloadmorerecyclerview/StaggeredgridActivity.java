@@ -26,7 +26,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stagg);
-        EventBus.getDefault().register(this);
+        /*EventBus.getDefault().register(this);
         linerAdapter = new StaggAdapter(StaggeredgridActivity.this);
         final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
@@ -74,7 +74,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
             s.setUrl(contents.get(j));
             data.add(s);
         }
-        StaggeredGridImageDataService.startService(StaggeredgridActivity.this, data);
+        StaggeredGridImageDataService.startService(StaggeredgridActivity.this, data);*/
 
     }
 

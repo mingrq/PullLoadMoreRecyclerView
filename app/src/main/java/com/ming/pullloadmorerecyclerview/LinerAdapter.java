@@ -28,6 +28,12 @@ public class LinerAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void addContents(List<Integer> addcontents) {
+        int i = contents.size();
+        contents.addAll(addcontents);
+        notifyItemRangeInserted(i,contents.size()-i);
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
@@ -42,7 +48,6 @@ public class LinerAdapter extends RecyclerView.Adapter {
         View view;
         if (i == 0) {
             view = View.inflate(context, R.layout.item_linewr, null);
-
         } else {
             view = View.inflate(context, R.layout.item_liner, null);
         }

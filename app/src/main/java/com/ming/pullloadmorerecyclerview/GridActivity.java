@@ -23,7 +23,7 @@ public class GridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grid);
         GridAdapter gridAdapter = new GridAdapter(this);
         final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
-        pullLoadMoreView
+       /* pullLoadMoreView
                 .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
                 .setSpacing(4, 10, 10, true, true)
                 .setAdapter(gridAdapter)
@@ -47,6 +47,6 @@ public class GridActivity extends AppCompatActivity {
                 pullLoadMoreView.setFooterType(PullLoadMoreView.NOMORE);
             }
         });
-        pullLoadMoreView.commit();
+        pullLoadMoreView.commit();*/
     }
 }
