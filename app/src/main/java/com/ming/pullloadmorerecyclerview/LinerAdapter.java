@@ -3,6 +3,7 @@ package com.ming.pullloadmorerecyclerview;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -31,7 +32,7 @@ public class LinerAdapter extends RecyclerView.Adapter {
     public void addContents(List<Integer> addcontents) {
         int i = contents.size();
         contents.addAll(addcontents);
-        notifyItemRangeInserted(i,contents.size()-i);
+        notifyItemRangeChanged(i,contents.size()-i);
     }
 
     @Override

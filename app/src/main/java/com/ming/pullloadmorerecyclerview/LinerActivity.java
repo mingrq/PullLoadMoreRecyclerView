@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ public class LinerActivity extends AppCompatActivity {
                     public void onRefresh() {
                         contents.clear();
                         k[0] = 0;
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 4; i++) {
                             contents.add(i);
                         }
                         pullLoadMoreView.getSwipeRefreshLayout().setRefreshing(false);
@@ -51,11 +52,11 @@ public class LinerActivity extends AppCompatActivity {
                         final List<Integer> contenta = new ArrayList<>();
                         if (k[0] < 2) {
                             k[0]++;
-                            for (int i = 0; i < 3; i++) {
+                            for (int i = 0; i < 1; i++) {
                                 contenta.add(i);
                             }
-
-                            linerAdapter.addContents(contenta);
+                            //((SimpleItemAnimator) pullLoadMoreView.getRecyclerView().getItemAnimator()).setSupportsChangeAnimations(false);
+                           // linerAdapter.addContents(contenta);
                             pullLoadMoreView.complete();
                         }
                     }

@@ -574,12 +574,6 @@ public class PullLoadMoreView extends FrameLayout {
     public void complete() {
         //结束下拉刷新
         swipeRefreshLayout.setRefreshing(false);
-        //结束上拉加载
-        if (pullLoadMoreViewAdapter != null) {
-            //删除脚布局
-            if (isFooterViewEnable)
-                pullLoadMoreViewAdapter.notifyItemRemoved(pullLoadMoreViewAdapter.getItemCount());
-        }
     }
 
     /**
