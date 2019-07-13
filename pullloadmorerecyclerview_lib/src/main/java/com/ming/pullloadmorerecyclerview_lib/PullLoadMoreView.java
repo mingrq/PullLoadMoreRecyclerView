@@ -68,6 +68,9 @@ public class PullLoadMoreView extends FrameLayout {
     private boolean isCustomDivider = false;
     private boolean isDividerEnable = true;
     private boolean isFooterViewEnable = true;
+    //布局方向
+    private int orientation;
+
     private PullLoadMoreViewAdapter pullLoadMoreViewAdapter;
 
     public PullLoadMoreView(@NonNull Context context) {
@@ -319,7 +322,15 @@ public class PullLoadMoreView extends FrameLayout {
         this.layoutType = layoutType;
         return this;
     }
-
+    /**
+     * 设置布局方向
+     *
+     * @param orientation 布局方向
+     */
+    public PullLoadMoreView setInitLayoutOrientation(int orientation) {
+        this.orientation = orientation;
+        return this;
+    }
     /**
      * 设置下拉刷新监听
      *
@@ -450,6 +461,7 @@ public class PullLoadMoreView extends FrameLayout {
         switch (layoutType) {
             case LINERLAYOUT:
                 linearLayoutManager = new LinearLayoutManager(context);
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 //是否需要分割线
                 if (isDividerEnable) {

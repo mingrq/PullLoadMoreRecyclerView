@@ -16,7 +16,7 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class LinerAdapter extends RecyclerView.Adapter {
+public class LinerAdapter extends RecyclerView.Adapter<LinerAdapter.MyViewHolder> {
     private Context context;
     private List<Integer> contents;
 
@@ -32,7 +32,7 @@ public class LinerAdapter extends RecyclerView.Adapter {
     public void addContents(List<Integer> addcontents) {
         int i = contents.size();
         contents.addAll(addcontents);
-        notifyItemRangeChanged(i,contents.size()-i);
+        notifyItemRangeChanged(i, contents.size() - i);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class LinerAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+    public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
+        viewHolder.textView.setText("test:" + i);
     }
 
 

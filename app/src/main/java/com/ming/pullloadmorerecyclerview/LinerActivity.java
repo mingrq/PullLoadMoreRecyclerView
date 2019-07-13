@@ -33,13 +33,15 @@ public class LinerActivity extends AppCompatActivity {
         final int[] k = {0};
         pullLoadMoreView
                 .setInitAdapter(linerAdapter)
+                .setInitFooterViewEnable(false)
+                .setInitRefreshAndMoreEnable(false,false)
                 .setInitLayoutType(PullLoadMoreView.LINERLAYOUT)
                 .setInitOnPullLoadListener(new PullLoadMoreView.PullLoadListener() {
                     @Override
                     public void onRefresh() {
                         contents.clear();
                         k[0] = 0;
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 0; i <10; i++) {
                             contents.add(i);
                         }
                         pullLoadMoreView.getSwipeRefreshLayout().setRefreshing(false);

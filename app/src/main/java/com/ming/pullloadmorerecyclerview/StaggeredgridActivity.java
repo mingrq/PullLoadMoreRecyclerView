@@ -26,14 +26,13 @@ public class StaggeredgridActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stagg);
-        /*EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
         linerAdapter = new StaggAdapter(StaggeredgridActivity.this);
         final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_stagg);
         pullLoadMoreView
-                .setLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
-                .setSpacing(2, 10, 10, true, false)
-                .setAdapter(linerAdapter)
-                .setNeedRefreshAndMore(true,true)
+                .setInitLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
+                .setInitSpacing(2, 10, 10, true, false)
+                .setInitAdapter(linerAdapter)
                 .commit();
         List<String> contents = new ArrayList<>();
          contents.add("http://hbimg.b0.upaiyun.com/dc2bffb262eab801646348ebacaa899f7786670f3c1fb-ZSyM5d_fw658");
@@ -74,7 +73,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
             s.setUrl(contents.get(j));
             data.add(s);
         }
-        StaggeredGridImageDataService.startService(StaggeredgridActivity.this, data);*/
+        StaggeredGridImageDataService.startService(StaggeredgridActivity.this, data);
 
     }
 

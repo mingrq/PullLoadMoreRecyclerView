@@ -23,11 +23,11 @@ public class GridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grid);
         GridAdapter gridAdapter = new GridAdapter(this);
         final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
-       /* pullLoadMoreView
-                .setLayoutType(PullLoadMoreView.GRIDLAYOUT)
-                .setSpacing(4, 10, 10, true, true)
-                .setAdapter(gridAdapter)
-                .setNeedRefreshAndMore(true, true);
+        pullLoadMoreView
+                .setInitLayoutType(PullLoadMoreView.GRIDLAYOUT)
+                .setInitSpacing(4, 10, 10, true, true)
+                .setInitAdapter(gridAdapter);
+
         // pullLoadMoreView.openNoDataPage();
         //pullLoadMoreView.openConnectFailedPage();
         List<Integer> contents = new ArrayList<>();
@@ -35,18 +35,21 @@ public class GridActivity extends AppCompatActivity {
             contents.add(i);
         }
         gridAdapter.setContents(contents);
-        pullLoadMoreView.setOnPullLoadMoreListener(new PullLoadMoreView.PullLoadMoreListener() {
-            @Override
-            public void onRefresh() {
-                Toast.makeText(GridActivity.this, "ghjghg", Toast.LENGTH_LONG).show();
-            }
+        pullLoadMoreView.setInitOnLoadMoreListener(new PullLoadMoreView.LoadMoreListener() {
 
             @Override
             public void onLoadMore() {
                 Toast.makeText(GridActivity.this, "test", Toast.LENGTH_LONG).show();
-                pullLoadMoreView.setFooterType(PullLoadMoreView.NOMORE);
+                //pullLoadMoreView.setFooterType(PullLoadMoreView.NOMORE);
             }
         });
-        pullLoadMoreView.commit();*/
+        pullLoadMoreView.setInitOnPullLoadListener(new PullLoadMoreView.PullLoadListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(GridActivity.this, "ghjghg", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        pullLoadMoreView.commit();
     }
 }
