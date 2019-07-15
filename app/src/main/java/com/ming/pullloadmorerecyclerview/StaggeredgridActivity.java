@@ -33,6 +33,7 @@ public class StaggeredgridActivity extends AppCompatActivity {
                 .setInitLayoutType(PullLoadMoreView.STAGGEREDGRIDLAYOUT)
                 .setInitSpacing(2, 10, 10, true, false)
                 .setInitAdapter(linerAdapter)
+                .setInitItemMoveAnimation(new DragItemTouchHelper(linerAdapter))
                 .commit();
         List<String> contents = new ArrayList<>();
          contents.add("http://hbimg.b0.upaiyun.com/dc2bffb262eab801646348ebacaa899f7786670f3c1fb-ZSyM5d_fw658");

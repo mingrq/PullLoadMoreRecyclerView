@@ -18,7 +18,7 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder> {
+public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder> implements ItemTouchHelperListener{
     private Context context;
     private List<StaggeredGridImageDataBean> contents;
     private List<Integer> mheight;
@@ -37,6 +37,12 @@ public class StaggAdapter extends RecyclerView.Adapter<StaggAdapter.MyViewHolder
         notifyDataSetChanged();
     }
 
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        StaggeredGridImageDataBean prev = contents.remove(fromPosition);
+        contents.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
+    }
     int pokemonsList[] = {R.drawable.p1, R.drawable.p2, R.drawable.p3,
             R.drawable.p4, R.drawable.p5, R.drawable.p6, R.drawable.p7,
             R.drawable.p8, R.drawable.p9, R.drawable.p10, R.drawable.p11,

@@ -16,7 +16,7 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> {
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> implements ItemTouchHelperListener{
     private Context context;
     private List<Integer> contents;
 
@@ -28,7 +28,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> 
         this.contents = contents;
         notifyDataSetChanged();
     }
-
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Integer prev = contents.remove(fromPosition);
+        contents.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
+    }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

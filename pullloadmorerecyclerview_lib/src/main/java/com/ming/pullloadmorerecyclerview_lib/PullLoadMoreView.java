@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class PullLoadMoreView extends FrameLayout {
     private int orientation;
 
     private PullLoadMoreViewAdapter pullLoadMoreViewAdapter;
+    private boolean itemAnimationEnable = false;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -322,6 +324,7 @@ public class PullLoadMoreView extends FrameLayout {
         this.layoutType = layoutType;
         return this;
     }
+
     /**
      * 设置布局方向
      *
@@ -331,6 +334,7 @@ public class PullLoadMoreView extends FrameLayout {
         this.orientation = orientation;
         return this;
     }
+
     /**
      * 设置下拉刷新监听
      *
@@ -411,6 +415,16 @@ public class PullLoadMoreView extends FrameLayout {
     }
 
     /**
+     * 设置item拖动动画
+     */
+    public PullLoadMoreView setInitItemTouchAnimation(ItemTouchHelper.Callback callback) {
+        itemAnimationEnable = true;
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
+        return this;
+    }
+
+    /**
      * 是否需要脚布局
      */
     public PullLoadMoreView setInitFooterViewEnable(boolean isFooterViewEnable) {
@@ -461,7 +475,7 @@ public class PullLoadMoreView extends FrameLayout {
         switch (layoutType) {
             case LINERLAYOUT:
                 linearLayoutManager = new LinearLayoutManager(context);
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                //linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 //是否需要分割线
                 if (isDividerEnable) {
@@ -569,6 +583,13 @@ public class PullLoadMoreView extends FrameLayout {
      */
     public SwipeRefreshLayout getSwipeRefreshLayout() {
         return swipeRefreshLayout;
+    }
+
+    /**
+     * 获取是否启用了item滑动
+     */
+    public boolean getItemTouchIsEnabled() {
+        return itemAnimationEnable;
     }
 
     /**

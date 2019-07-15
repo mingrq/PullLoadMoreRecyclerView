@@ -16,7 +16,7 @@ import java.util.List;
  * E-mail mingruqi@sina.cn
  * DateTime 2019/2/18 15:27
  */
-public class LinerAdapter extends RecyclerView.Adapter<LinerAdapter.MyViewHolder> {
+public class LinerAdapter extends RecyclerView.Adapter<LinerAdapter.MyViewHolder> implements ItemTouchHelperListener {
     private Context context;
     private List<Integer> contents;
 
@@ -53,6 +53,13 @@ public class LinerAdapter extends RecyclerView.Adapter<LinerAdapter.MyViewHolder
             view = View.inflate(context, R.layout.item_liner, null);
         }
         return new MyViewHolder(view);
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Integer prev = contents.remove(fromPosition);
+        contents.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override
