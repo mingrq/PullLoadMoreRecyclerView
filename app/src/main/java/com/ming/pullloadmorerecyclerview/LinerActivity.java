@@ -35,7 +35,7 @@ public class LinerActivity extends AppCompatActivity {
                 .setInitAdapter(linerAdapter)
                 .setInitFooterViewEnable(false)
                 .setInitRefreshAndMoreEnable(false,false)
-                .setInitLayoutType(PullLoadMoreView.LINERLAYOUT)
+                .setInitLayoutType(PullLoadMoreView.LINERLAYOUT,PullLoadMoreView.VERTICAL)
                // .setInitItemMoveAnimation(new DragItemTouchHelper(linerAdapter))
                 .setInitOnPullLoadListener(new PullLoadMoreView.PullLoadListener() {
                     @Override
