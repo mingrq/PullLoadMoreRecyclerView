@@ -24,7 +24,7 @@ public class GridActivity extends AppCompatActivity {
         GridAdapter gridAdapter = new GridAdapter(this);
         final PullLoadMoreView pullLoadMoreView = findViewById(R.id.pull_grid);
         pullLoadMoreView
-                .setInitLayoutType(PullLoadMoreView.GRIDLAYOUT)
+                .setInitLayoutType(PullLoadMoreView.GRIDLAYOUT,PullLoadMoreView.HORIZONTAL)
                 .setInitSpacing(4, 10, 10, true, true)
                 .setInitAdapter(gridAdapter);
                // .setInitItemMoveAnimation(new DragItemTouchHelper(gridAdapter));

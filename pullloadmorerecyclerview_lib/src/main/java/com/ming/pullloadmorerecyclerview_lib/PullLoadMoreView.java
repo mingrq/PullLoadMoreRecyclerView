@@ -30,13 +30,16 @@ public class PullLoadMoreView extends FrameLayout {
     public static final int GRIDLAYOUT = 0x00010;//网格布局
     public static final int STAGGEREDGRIDLAYOUT = 0x00020;//瀑布流
 
+    public static final int HORIZONTAL = 0;//横向布局
+    public static final int VERTICAL = 1;//纵向布局
+
     private static final int DATA = 0x114253;//数据页面
     private static final int NODATA = 0x114254;//空数据页面
     private static final int CONNECTFAILED = 0x114255;//网络连接错误页面
 
-    public static final int FOOTERNOMORE = 0x000123741;//设置完成加载数据无数据状态
-    public static final int FOOTERMOREING = 0x000123742;//设置正在加载数据状态
-    public static final int FOOTERLOADMOREERROR = 0x00123743;//设置加载数据错误状态
+    public static final int FOOTERNOMORE = 0x000123741;//设置脚布局为完成加载数据无数据状态
+    public static final int FOOTERMOREING = 0x000123742;//设置脚布局为正在加载数据状态
+    public static final int FOOTERLOADMOREERROR = 0x00123743;//设置脚布局为加载数据错误状态
 
     /*布局类型*/
     private int layoutType = LINERLAYOUT;
@@ -70,7 +73,7 @@ public class PullLoadMoreView extends FrameLayout {
     private boolean isDividerEnable = true;
     private boolean isFooterViewEnable = true;
     //布局方向
-    private int orientation;
+    private int orientation = 1;
 
     private PullLoadMoreViewAdapter pullLoadMoreViewAdapter;
     private boolean itemAnimationEnable = false;
@@ -318,19 +321,12 @@ public class PullLoadMoreView extends FrameLayout {
     /**
      * 设置布局方式
      *
-     * @param layoutType 布局方式
-     */
-    public PullLoadMoreView setInitLayoutType(int layoutType) {
-        this.layoutType = layoutType;
-        return this;
-    }
-
-    /**
-     * 设置布局方向
-     *
+     * @param layoutType  布局方式
      * @param orientation 布局方向
+     * @return
      */
-    public PullLoadMoreView setInitLayoutOrientation(int orientation) {
+    public PullLoadMoreView setInitLayoutType(int layoutType, int orientation) {
+        this.layoutType = layoutType;
         this.orientation = orientation;
         return this;
     }
@@ -475,7 +471,9 @@ public class PullLoadMoreView extends FrameLayout {
         switch (layoutType) {
             case LINERLAYOUT:
                 linearLayoutManager = new LinearLayoutManager(context);
-                //linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                if (orientation == 0) {
+                    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                }
                 recyclerView.setLayoutManager(linearLayoutManager);
                 //是否需要分割线
                 if (isDividerEnable) {
@@ -494,12 +492,18 @@ public class PullLoadMoreView extends FrameLayout {
                 break;
             case GRIDLAYOUT:
                 gridLayoutManager = new GridLayoutManager(context, SpanCount, LinearLayoutManager.VERTICAL, false);
+                if (orientation == 0) {
+                    gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
+                }
                 recyclerView.setLayoutManager(gridLayoutManager);
                 //使用间隔
                 setDivider();
                 break;
             case STAGGEREDGRIDLAYOUT:
                 staggeredGridLayoutManager = new StaggeredGridLayoutManager(SpanCount, StaggeredGridLayoutManager.VERTICAL);
+                if (orientation == 0) {
+                    staggeredGridLayoutManager.setOrientation(StaggeredGridLayoutManager.HORIZONTAL);
+                }
                 staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                 staggeredGridLayoutManager.invalidateSpanAssignments();
