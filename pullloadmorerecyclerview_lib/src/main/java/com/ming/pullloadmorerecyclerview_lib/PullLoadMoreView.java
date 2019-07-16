@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import com.ming.pullloadmorerecyclerview_lib.layout.FooterView;
 
 /**
@@ -72,9 +73,12 @@ public class PullLoadMoreView extends FrameLayout {
     private boolean isFooterViewEnable = true;
     //布局方向
     private int orientation = 1;
+    //是否反转布局
+    private boolean isReverseLayoutEnable = false;
 
     private PullLoadMoreViewAdapter pullLoadMoreViewAdapter;
     private boolean itemAnimationEnable = false;
+    private boolean isStackFromEndEnable = false;
 
     public PullLoadMoreView(@NonNull Context context) {
         this(context, null);
@@ -377,6 +381,23 @@ public class PullLoadMoreView extends FrameLayout {
         return this;
     }
 
+    /**
+     * 设置反转布局是否激活
+     */
+    public PullLoadMoreView setReverseLayoutEnable(boolean isReverseLayoutEnable) {
+        this.isReverseLayoutEnable = isReverseLayoutEnable;
+        return this;
+    }
+
+    /**
+     * 设置从底部开始显示数据是否激活
+     */
+    public PullLoadMoreView setStackFromEndEnable(boolean isStackFromEndEnable) {
+        this.isStackFromEndEnable = isStackFromEndEnable;
+        return this;
+    }
+
+
 //------------------------------GridLayout、StaggeredGridLayout布局使用---------------------------------------
 
     /**
@@ -469,9 +490,15 @@ public class PullLoadMoreView extends FrameLayout {
         switch (layoutType) {
             case LINERLAYOUT:
                 linearLayoutManager = new LinearLayoutManager(context);
+
                 if (orientation == 0) {
                     linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 }
+                //设置布局正序还是倒序
+                linearLayoutManager.setReverseLayout(isReverseLayoutEnable);
+
+                //设置数据是否从底部开始显示
+                linearLayoutManager.setStackFromEnd(isStackFromEndEnable);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 //是否需要分割线
                 if (isDividerEnable) {

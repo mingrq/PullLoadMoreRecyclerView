@@ -34,7 +34,7 @@ public class LinerActivity extends AppCompatActivity {
         pullLoadMoreView
                 .setInitAdapter(linerAdapter)
                 .setInitFooterViewEnable(false)
-                .setInitRefreshAndMoreEnable(false,false)
+                .setInitRefreshAndMoreEnable(false,true)
                 .setInitLayoutType(PullLoadMoreView.LINERLAYOUT,PullLoadMoreView.VERTICAL)
                // .setInitItemMoveAnimation(new DragItemTouchHelper(linerAdapter))
                 .setInitOnPullLoadListener(new PullLoadMoreView.PullLoadListener() {
@@ -42,7 +42,7 @@ public class LinerActivity extends AppCompatActivity {
                     public void onRefresh() {
                         contents.clear();
                         k[0] = 0;
-                        for (int i = 0; i <10; i++) {
+                        for (int i = 0; i <20; i++) {
                             contents.add(i);
                         }
                         pullLoadMoreView.getSwipeRefreshLayout().setRefreshing(false);
@@ -55,12 +55,12 @@ public class LinerActivity extends AppCompatActivity {
                         final List<Integer> contenta = new ArrayList<>();
                         if (k[0] < 2) {
                             k[0]++;
-                            for (int i = 0; i < 1; i++) {
+                            for (int i = 0; i < 10; i++) {
                                 contenta.add(i);
                             }
                             //((SimpleItemAnimator) pullLoadMoreView.getRecyclerView().getItemAnimator()).setSupportsChangeAnimations(false);
-                           // linerAdapter.addContents(contenta);
-                            pullLoadMoreView.complete();
+                           linerAdapter.addContents(contenta);
+                           // pullLoadMoreView.complete();
                         }
                     }
                 })
