@@ -52,7 +52,7 @@ true：激活  false：禁止
 ### PullLoadMoreView setStackFromEndEnable(boolean isStackFromEndEnable)
 #### 设置从底部开始显示数据是否激活 _LinerLayout布局使用_
 ``` 
-isStackFromEndEnable:是否激活数据从下向上排列
+isStackFromEndEnable:是否激活数据从底部开始显示
 true：激活  false：禁止
 ```
  </br>
