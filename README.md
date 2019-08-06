@@ -26,6 +26,7 @@ dependencies {
 ### PullLoadMoreView setInitDividerEnable(boolean isDividerEnable)
 #### 是否需要分割线  _LinerLayout布局使用_
 
+
 #
 ### PullLoadMoreView setInitDivider(int height, int color)
 #### 设置分割线  _LinerLayout布局使用_
@@ -41,13 +42,19 @@ dependencies {
 #
 ### PullLoadMoreView setStackFromEndEnable(boolean isStackFromEndEnable)
 #### 设置从底部开始显示数据是否激活 _LinerLayout布局使用_
-
+   
+ </br>
+ </br>
+ </br>
 ### _----------------GridLayout、StaggeredGridLayout布局方法---------------_
 
 #
 ### PullLoadMoreView setInitSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin)
 #### 设置间距  _GridLayout、StaggeredGridLayout布局使用_
 
+</br>
+ </br>
+ </br>
 ### _----------------公用初始化方法---------------_
 
 #
@@ -81,6 +88,23 @@ dependencies {
 #
 ### PullLoadMoreView setInitFooterView(View customFooterView, PullLoadMoreFooterCallBack footerCallBack)
 #### 设置脚布局
+customFooterView：自定义脚布局</br>
+footerCallBack：脚布局状态回调函数
+```
+   /**
+     * 脚布局状态回调接口
+     */
+    public interface PullLoadMoreFooterCallBack {
+        //设置完成加载数据无更多数据
+        void noMore(View footerView);
+
+        //设置正在加载数据
+        void moreing(View footerView);
+
+        //设置加载数据错误
+        void moreError(View footerView);
+    }
+```
 
 #
 ### PullLoadMoreView setInitNoDataPage(View noDataPage)
@@ -94,6 +118,9 @@ dependencies {
 ### commit()
 #### 提交
 
+</br>
+ </br>
+ </br>
 ### _----------------控件操作方法---------------_
 
 #
@@ -143,3 +170,4 @@ dependencies {
 #
 ### void showDataView()
 #### 移除空数据和网络错误页面显示数据页面
+
