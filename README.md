@@ -20,7 +20,7 @@ dependencies {
 ```
 ### 方法
 
-### _----------------LinerLayout布局方法---------------_
+###  _----------------LinerLayout布局方法---------------_
 
 #
 ### PullLoadMoreView setInitDividerEnable(boolean isDividerEnable)
@@ -46,7 +46,7 @@ dependencies {
  </br>
  </br>
  </br>
-### _----------------GridLayout、StaggeredGridLayout布局方法---------------_
+###  _----------------GridLayout、StaggeredGridLayout布局方法---------------_
 
 #
 ### PullLoadMoreView setInitSpacing(int SpanCount, int horizontalSpacing, int verticalSpacing, boolean horizontalMargin, boolean verticalMargin)
@@ -55,7 +55,7 @@ dependencies {
 </br>
  </br>
  </br>
-### _----------------公用初始化方法---------------_
+###  _----------------公用初始化方法---------------_
 
 #
 ### PullLoadMoreView setInitRefreshAndMoreEnable(boolean isRefreshEnable, boolean isMoreEnable) 
@@ -121,7 +121,7 @@ footerCallBack：脚布局状态回调函数
 </br>
  </br>
  </br>
-### _----------------控件操作方法---------------_
+###  _----------------控件操作方法---------------_
 
 #
 ### RecyclerView getRecyclerView()
