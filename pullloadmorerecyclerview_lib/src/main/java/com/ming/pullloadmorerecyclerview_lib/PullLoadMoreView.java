@@ -306,52 +306,7 @@ public class PullLoadMoreView extends FrameLayout {
 
     /**---------------------------对外方法------------------------------------*/
 
-//-----------------------------------------------------------------初始化控件方法-------------------------------------------------------------------
 
-    /**
-     * 是否需要下拉刷新上拉加载功能
-     *
-     * @param isRefreshEnable 刷新
-     * @param isMoreEnable    加载更多
-     */
-    public PullLoadMoreView setInitRefreshAndMoreEnable(boolean isRefreshEnable, boolean isMoreEnable) {
-        this.isRefreshEnable = isRefreshEnable;
-        this.isMoreEnable = isMoreEnable;
-        return this;
-    }
-
-    /**
-     * 设置布局方式
-     *
-     * @param layoutType  布局方式
-     * @param orientation 布局方向
-     * @return
-     */
-    public PullLoadMoreView setInitLayoutType(int layoutType, int orientation) {
-        this.layoutType = layoutType;
-        this.orientation = orientation;
-        return this;
-    }
-
-    /**
-     * 设置下拉刷新监听
-     *
-     * @param pullLoadListener
-     */
-    public PullLoadMoreView setInitOnPullLoadListener(PullLoadListener pullLoadListener) {
-        this.pullLoadListener = pullLoadListener;
-        return this;
-    }
-
-    /**
-     * 设置上拉加载监听
-     *
-     * @param loadMoreListener
-     */
-    public PullLoadMoreView setInitOnLoadMoreListener(LoadMoreListener loadMoreListener) {
-        this.loadMoreListener = loadMoreListener;
-        return this;
-    }
 //-------------------------------------LinerLayout布局使用-------------------------------------
 
     /**
@@ -399,6 +354,51 @@ public class PullLoadMoreView extends FrameLayout {
 
 
 //------------------------------GridLayout、StaggeredGridLayout布局使用---------------------------------------
+
+    /**
+     * 是否需要下拉刷新上拉加载功能
+     *
+     * @param isRefreshEnable 刷新
+     * @param isMoreEnable    加载更多
+     */
+    public PullLoadMoreView setInitRefreshAndMoreEnable(boolean isRefreshEnable, boolean isMoreEnable) {
+        this.isRefreshEnable = isRefreshEnable;
+        this.isMoreEnable = isMoreEnable;
+        return this;
+    }
+
+    /**
+     * 设置布局方式
+     *
+     * @param layoutType  布局方式
+     * @param orientation 布局方向
+     * @return
+     */
+    public PullLoadMoreView setInitLayoutType(int layoutType, int orientation) {
+        this.layoutType = layoutType;
+        this.orientation = orientation;
+        return this;
+    }
+
+    /**
+     * 设置下拉刷新监听
+     *
+     * @param pullLoadListener
+     */
+    public PullLoadMoreView setInitOnPullLoadListener(PullLoadListener pullLoadListener) {
+        this.pullLoadListener = pullLoadListener;
+        return this;
+    }
+
+    /**
+     * 设置上拉加载监听
+     *
+     * @param loadMoreListener
+     */
+    public PullLoadMoreView setInitOnLoadMoreListener(LoadMoreListener loadMoreListener) {
+        this.loadMoreListener = loadMoreListener;
+        return this;
+    }
 
     /**
      * 设置间距  GridLayout、StaggeredGridLayout布局使用
