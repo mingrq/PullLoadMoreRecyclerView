@@ -706,7 +706,7 @@ public class PullLoadMoreView extends FrameLayout {
     /**
      * 移除空数据和网络错误页面显示数据页面
      */
-    public void removeEmptyAndErrorView() {
+    public void showDataView() {
         showPage(DATA);
     }
 }
