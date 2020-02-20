@@ -52,6 +52,7 @@ public class PullLoadMoreView extends FrameLayout {
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean isRefreshEnable = true;
     private boolean isMoreEnable = true;
+    private boolean isHaveMore= true;
     private PullLoadListener pullLoadListener = null;
     private LoadMoreListener loadMoreListener = null;
     private View connectFailedPage = null;
@@ -538,6 +539,7 @@ public class PullLoadMoreView extends FrameLayout {
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
+                    isHaveMore=true;
                     pullLoadListener.onRefresh();
                 }
             });
@@ -566,7 +568,7 @@ public class PullLoadMoreView extends FrameLayout {
                     int itemcount = recyclerView.getAdapter().getItemCount() - 1;
                     if (lastPosition == itemcount) {
                         //滑动到最后一个
-                        if (isMoreEnable)
+                        if (isMoreEnable && isHaveMore)
                             //调用回调方法
                             loadMoreListener.onLoadMore();
                     }
@@ -646,8 +648,10 @@ public class PullLoadMoreView extends FrameLayout {
      * 刷新
      */
     public void onRefresh() {
-        if (pullLoadListener != null)
+        if (pullLoadListener != null){
+            isHaveMore=true;
             pullLoadListener.onRefresh();
+        }
     }
 
     /**
@@ -661,7 +665,15 @@ public class PullLoadMoreView extends FrameLayout {
      * 设置脚布局--没有更多状态
      */
     public void onNoMore() {
+        isHaveMore=false;
         setFooterType(FOOTERNOMORE);
+    }
+
+    /**
+     * 设置有更多状态----如果使用onNoMore后，在不刷新页面的情况下再次使用加载更多回调必须先调用这个方法
+     */
+    public void onHaveMore() {
+        isHaveMore=true;
     }
 
     /**
