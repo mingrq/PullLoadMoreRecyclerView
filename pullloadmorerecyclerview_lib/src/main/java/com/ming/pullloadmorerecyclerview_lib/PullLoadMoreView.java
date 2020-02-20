@@ -187,10 +187,6 @@ public class PullLoadMoreView extends FrameLayout {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             if (i == FOOTER) {
-                //脚布局
-                if (footerView == null) {
-                    footerView = new FooterView(context);
-                }
                 return new FooterViewHolder(footerView);
             }
             return adapter.onCreateViewHolder(viewGroup, i);
@@ -592,6 +588,14 @@ public class PullLoadMoreView extends FrameLayout {
                     super.onScrolled(recyclerView, dx, dy);
                 }
             });
+        }
+
+        //设置脚布局
+        if (isFooterViewEnable){
+            //脚布局
+            if (footerView == null) {
+                footerView = new FooterView(context);
+            }
         }
         //设置适配器
         pullLoadMoreViewAdapter = new PullLoadMoreViewAdapter(adapter);
