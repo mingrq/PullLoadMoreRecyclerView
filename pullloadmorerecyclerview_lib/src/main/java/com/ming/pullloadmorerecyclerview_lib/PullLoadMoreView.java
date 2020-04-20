@@ -505,7 +505,7 @@ public class PullLoadMoreView extends FrameLayout {
                     } else {
                         //使用默认的分割线
                         if (divider == null) {
-                            divider = new RecycleViewDivider(context, layoutType, isRefreshEnable, isMoreEnable);
+                            divider = new RecycleViewDivider(context, layoutType, isRefreshEnable, isFooterViewEnable);
                         }
                         divider.setDrvider(height, color);
                         recyclerView.addItemDecoration(divider);

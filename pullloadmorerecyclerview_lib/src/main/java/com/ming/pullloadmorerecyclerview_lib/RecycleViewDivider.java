@@ -34,20 +34,20 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     private boolean verticalMargin;
     private boolean horizontalMargin;
     private boolean isRefresh = true;
-    private boolean isMore = true;
+    private boolean isFooterViewEnable = true;
 
     /**
      * 默认分割线：高度为2px，颜色为灰色
      *
      * @param context
      * @param isRefresh 刷新
-     * @param isMore    加载更多
+     * @param isFooterViewEnable    加载更多
      */
-    public RecycleViewDivider(Context context, int layoutType, boolean isRefresh, boolean isMore) {
+    public RecycleViewDivider(Context context, int layoutType, boolean isRefresh, boolean isFooterViewEnable) {
         this.context = context;
         this.layoutType = layoutType;
         this.isRefresh = isRefresh;
-        this.isMore = isMore;
+        this.isFooterViewEnable = isFooterViewEnable;
     }
 
     @Override
@@ -130,7 +130,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 
                 break;
         }
-        if (isMore) {
+        if (isFooterViewEnable) {
             //使用加载更多布局
             if (isLastRow(view,parent)) {
                 outRect.set(0, 0, 0, 0);
